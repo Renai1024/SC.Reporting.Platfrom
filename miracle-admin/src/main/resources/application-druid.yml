@@ -24,6 +24,15 @@ spring:
                 url: jdbc:sqlserver://192.168.4.71:1433;databaseName=SC;trustServerCertificate=true;encrypt=true;
                 username: bs_guest
                 password: bs_guest@123
+
+            #从数据源2
+            slave2:
+                # 从数据源开关/默认关闭
+                enabled: true
+                url: jdbc:sqlserver://192.168.4.69:1433;databaseName=SC;trustServerCertificate=true;encrypt=true;
+                username: sa
+                password: 1234!QAZ2wsx
+
             # 初始连接数
             initialSize: 5
             # 最小连接池数量
