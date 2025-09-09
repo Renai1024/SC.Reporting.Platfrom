@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.ProductReportMesMapper">
+    
+    <resultMap type="ProductReportMes" id="ProductReportMesResult">
+        <result property="id"    column="id"    />
+        <result property="materialNo"    column="material_no"    />
+        <result property="oldMaterialNo"    column="old_material_no"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="info1"    column="info1"    />
+        <result property="info2"    column="info2"    />
+        <result property="info3"    column="info3"    />
+        <result property="info4"    column="info4"    />
+        <result property="info5"    column="info5"    />
+        <result property="info6"    column="info6"    />
+        <result property="barcode"    column="barcode"    />
+        <result property="testStartTime"    column="test_start_time"    />
+        <result property="testEndTime"    column="test_end_time"    />
+        <result property="testResult"    column="test_result"    />
+        <result property="messageEscape"    column="message_escape"    />
+        <result property="testStatus"    column="test_status"    />
+        <result property="clientIp"    column="client_ip"    />
+        <result property="productType"    column="product_type"    />
+        <result property="customerFlag"    column="customer_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectProductReportMesVo">
+        select id, material_no, old_material_no, order_no, info1, info2, info3, info4, info5, info6, barcode, test_start_time, test_end_time, test_result, message_escape, test_status, client_ip, product_type, customer_flag, create_by, create_time, update_by, update_time
+        from product_report_mes
+        order by test_start_time desc
+    </sql>
+
+    <select id="selectProductReportMesList" parameterType="ProductReportMes" resultMap="ProductReportMesResult">
+        <include refid="selectProductReportMesVo"/>
+        <where>  
+            <if test="materialNo != null  and materialNo.trim().length() > 0"> and material_no like concat('%', #{materialNo}, '%')</if>
+            <if test="oldMaterialNo != null  and oldMaterialNo.trim().length() > 0"> and old_material_no like concat('%', #{oldMaterialNo}, '%)'</if>
+            <if test="orderNo != null  and orderNo.trim().length() > 0"> and order_no like concat('%', #{orderNo}, '%')</if>
+            <if test="info1 != null  and info1.trim().length() > 0"> and info1 like concat('%', #{info1}, '%')</if>
+            <if test="info2 != null  and info2.trim().length() > 0"> and info2 like concat('%', #{info2}, '%')</if>
+            <if test="info3 != null  and info3.trim().length() > 0"> and info3 like concat('%', #{info3}, '%')</if>
+            <if test="info4 != null  and info4.trim().length() > 0"> and info4 like concat('%', #{info4}, '%')</if>
+            <if test="info5 != null  and info5.trim().length() > 0"> and info5 like concat('%', #{info5}, '%')</if>
+            <if test="info6 != null  and info6.trim().length() > 0"> and info6 like concat('%', #{info6}, '%')</if>
+            <if test="barcode != null  and barcode.trim().length() > 0"> and barcode like concat('%', #{barcode}, '%')</if>
+            <if test="testStartTime != null "> and test_start_time &gt;= #{testStartTime}</if>
+            <if test="testEndTime != null "> and test_end_time &lt;= #{testEndTime}</if>
+            <if test="testResult != null  and testResult.trim().length() > 0"> and test_result like concat('%', #{testResult}, '%')</if>
+            <if test="messageEscape != null  and messageEscape.trim().length() > 0"> and message_escape like concat('%', #{messageEscape}, '%')</if>
+            <if test="testStatus != null  and testStatus.trim().length() > 0"> and test_status like concat('%', #{testStatus}, '%')</if>
+            <if test="clientIp != null  and clientIp.trim().length() > 0"> and client_ip like concat('%', #{clientIp}, '%')</if>
+            <if test="productType != null  and productType.trim().length() > 0"> and product_type like concat('%', #{productType}, '%')</if>
+            <if test="customerFlag != null  and customerFlag.trim().length() > 0"> and customer_flag like concat('%', #{customerFlag}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectProductReportMesById" parameterType="Long" resultMap="ProductReportMesResult">
+        <include refid="selectProductReportMesVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectProductReportMesListByIds" resultMap="ProductReportMesResult">
+        <include refid="selectProductReportMesVo"/>
+        where id in
+        <foreach item="id" collection="ids" separator="," open="(" close=")" index="index">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertProductReportMes" parameterType="ProductReportMes" useGeneratedKeys="true" keyProperty="id">
+        insert into product_report_mes
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="materialNo != null and materialNo != ''">material_no,</if>
+            <if test="oldMaterialNo != null">old_material_no,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="info1 != null">info1,</if>
+            <if test="info2 != null">info2,</if>
+            <if test="info3 != null">info3,</if>
+            <if test="info4 != null">info4,</if>
+            <if test="info5 != null">info5,</if>
+            <if test="info6 != null">info6,</if>
+            <if test="barcode != null">barcode,</if>
+            <if test="testStartTime != null">test_start_time,</if>
+            <if test="testEndTime != null">test_end_time,</if>
+            <if test="testResult != null">test_result,</if>
+            <if test="messageEscape != null">message_escape,</if>
+            <if test="testStatus != null">test_status,</if>
+            <if test="clientIp != null">client_ip,</if>
+            <if test="productType != null">product_type,</if>
+            <if test="customerFlag != null">customer_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="materialNo != null and materialNo != ''">#{materialNo},</if>
+            <if test="oldMaterialNo != null">#{oldMaterialNo},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="info1 != null">#{info1},</if>
+            <if test="info2 != null">#{info2},</if>
+            <if test="info3 != null">#{info3},</if>
+            <if test="info4 != null">#{info4},</if>
+            <if test="info5 != null">#{info5},</if>
+            <if test="info6 != null">#{info6},</if>
+            <if test="barcode != null">#{barcode},</if>
+            <if test="testStartTime != null">#{testStartTime},</if>
+            <if test="testEndTime != null">#{testEndTime},</if>
+            <if test="testResult != null">#{testResult},</if>
+            <if test="messageEscape != null">#{messageEscape},</if>
+            <if test="testStatus != null">#{testStatus},</if>
+            <if test="clientIp != null">#{clientIp},</if>
+            <if test="productType != null">#{productType},</if>
+            <if test="customerFlag != null">#{customerFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <!-- 批量插入 -->
+    <insert id="insertProductReportMesBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO product_report_mes
+        (material_no,
+         old_material_no,
+         order_no,
+         info1,info2,info3,info4,info5,info6,
+         barcode,
+         test_start_time,
+         test_end_time,
+         test_result,
+         message_escape,
+         test_status,
+         client_ip,
+         product_type,
+         customer_flag,
+         create_by,
+         create_time,
+         update_by,
+         update_time)
+        values
+        <foreach collection="productReportMesList" item="item" separator=",">
+            (#{item.materialNo},
+             #{item.oldMaterialNo},
+             #{item.orderNo},
+             #{item.info1},
+             #{item.info2},
+             #{item.info3},
+             #{item.info4},
+             #{item.info5},
+             #{item.info6},
+             #{item.barcode},
+             #{item.testStartTime},
+             #{item.testEndTime},
+             #{item.testResult},
+             #{item.messageEscape},
+             #{item.testStatus},
+             #{item.clientIp},
+             #{item.productType},
+             #{item.customerFlag},
+             #{item.createBy},
+             #{item.createTime},
+             #{item.updateBy},
+             #{item.updateTime})
+        </foreach>
+    </insert>
+
+    <update id="updateProductReportMes" parameterType="ProductReportMes">
+        update product_report_mes
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="materialNo != null and materialNo != ''">material_no = #{materialNo},</if>
+            <if test="oldMaterialNo != null">old_material_no = #{oldMaterialNo},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="info1 != null">info1 = #{info1},</if>
+            <if test="info2 != null">info2 = #{info2},</if>
+            <if test="info3 != null">info3 = #{info3},</if>
+            <if test="info4 != null">info4 = #{info4},</if>
+            <if test="info5 != null">info5 = #{info5},</if>
+            <if test="info6 != null">info6 = #{info6},</if>
+            <if test="barcode != null">barcode = #{barcode},</if>
+            <if test="testStartTime != null">test_start_time = #{testStartTime},</if>
+            <if test="testEndTime != null">test_end_time = #{testEndTime},</if>
+            <if test="testResult != null">test_result = #{testResult},</if>
+            <if test="messageEscape != null">message_escape = #{messageEscape},</if>
+            <if test="testStatus != null">test_status = #{testStatus},</if>
+            <if test="clientIp != null">client_ip = #{clientIp},</if>
+            <if test="productType != null">product_type = #{productType},</if>
+            <if test="customerFlag != null">customer_flag = #{customerFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProductReportMesById" parameterType="Long">
+        delete from product_report_mes where id = #{id}
+    </delete>
+
+    <delete id="deleteProductReportMesByIds" parameterType="String">
+        delete from product_report_mes where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

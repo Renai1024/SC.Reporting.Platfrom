@@ -25,6 +25,8 @@ import com.miracle.common.utils.file.MimeTypeUtils;
 import com.miracle.framework.web.service.TokenService;
 import com.miracle.system.service.ISysUserService;
 
+import java.util.Map;
+
 /**
  * 个人信息 业务处理
  * 
@@ -87,14 +89,47 @@ public class SysProfileController extends BaseController
         return error("修改个人信息异常，请联系管理员");
     }
 
+//    /**
+//     * 重置密码
+//     */
+//    @Operation(summary = "重置密码")
+//    @Log(title = "个人信息", businessType = BusinessType.UPDATE)
+//    @PutMapping("/updatePwd")
+//    public AjaxResult updatePwd(String oldPassword, String newPassword)
+//    {
+//        LoginUser loginUser = getLoginUser();
+//        String userName = loginUser.getUsername();
+//        String password = loginUser.getPassword();
+//        if (!SecurityUtils.matchesPassword(oldPassword, password))
+//        {
+//            return error("修改密码失败，旧密码错误");
+//        }
+//        if (SecurityUtils.matchesPassword(newPassword, password))
+//        {
+//            return error("新密码不能与旧密码相同");
+//        }
+//        newPassword = SecurityUtils.encryptPassword(newPassword);
+//        if (userService.resetUserPwd(userName, newPassword) > 0)
+//        {
+//            // 更新缓存用户密码
+//            loginUser.getUser().setPassword(newPassword);
+//            tokenService.setLoginUser(loginUser);
+//            return success();
+//        }
+//        return error("修改密码异常，请联系管理员");
+//    }
+
+
     /**
      * 重置密码
      */
     @Operation(summary = "重置密码")
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PutMapping("/updatePwd")
-    public AjaxResult updatePwd(String oldPassword, String newPassword)
+    public AjaxResult updatePwd(@RequestBody Map<String,String> params)
     {
+        String oldPassword = params.get("oldPassword");
+        String newPassword = params.get("newPassword");
         LoginUser loginUser = getLoginUser();
         String userName = loginUser.getUsername();
         String password = loginUser.getPassword();
