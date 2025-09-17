@@ -25,6 +25,14 @@ spring:
                 username: bs_guest
                 password: bs_guest@123
 
+            #从数据源2
+            slave2:
+                # 从数据源开关/默认关闭
+                enabled: true
+                url: jdbc:sqlserver://192.168.4.191:17933;databaseName=SCYCDATA;trustServerCertificate=true;encrypt=true;
+                username: sa
+                password: 1234!QAZ2wsx
+
 #            #从数据源2
 #            slave2:
 #                # 从数据源开关/默认关闭

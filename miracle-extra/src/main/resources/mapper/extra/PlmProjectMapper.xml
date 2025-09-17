@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.PlmProjectMapper">
+    
+    <resultMap type="PlmProject" id="PlmProjectResult">
+        <result property="id"    column="id"    />
+        <result property="projectNumber"    column="projectNumber"    />
+        <result property="projectName"    column="projectName"    />
+        <result property="businessDivision"    column="businessDivision"    />
+        <result property="projectPlanStartTime"    column="projectPlanStartTime"  jdbcType="TIMESTAMP"  />
+        <result property="projectActualStartTime"    column="projectActualStartTime"  jdbcType="TIMESTAMP"  />
+        <result property="projectActualEndTime"    column="projectActualEndTime"  jdbcType="TIMESTAMP"  />
+        <result property="projectState"    column="projectState"    />
+        <result property="projectManager"    column="projectManager"    />
+        <result property="projectCompletedOnScheduleCount"    column="projectCompletedOnScheduleCount"    />
+    </resultMap>
+
+    <sql id="selectPlmProjectVo">
+        select id, projectNumber, projectName, businessDivision, projectPlanStartTime, projectActualStartTime, projectActualEndTime, projectState, projectManager, projectCompletedOnScheduleCount from plm_project
+    </sql>
+
+    <select id="selectPlmProjectList" parameterType="PlmProject" resultMap="PlmProjectResult">
+        <include refid="selectPlmProjectVo"/>
+        <where>  
+            <if test="projectNumber != null  and projectNumber != ''"> and projectNumber = #{projectNumber}</if>
+            <if test="projectName != null  and projectName != ''"> and projectName like concat('%', #{projectName}, '%')</if>
+            <if test="businessDivision != null  and businessDivision != ''"> and businessDivision = #{businessDivision}</if>
+            <if test="projectPlanStartTime != null "> and projectPlanStartTime = #{projectPlanStartTime}</if>
+            <if test="projectActualStartTime != null "> and projectActualStartTime = #{projectActualStartTime}</if>
+            <if test="projectActualEndTime != null "> and projectActualEndTime = #{projectActualEndTime}</if>
+            <if test="projectState != null  and projectState != ''"> and projectState = #{projectState}</if>
+            <if test="projectManager != null  and projectManager != ''"> and projectManager = #{projectManager}</if>
+            <if test="projectCompletedOnScheduleCount != null  and projectCompletedOnScheduleCount != ''"> and projectCompletedOnScheduleCount = #{projectCompletedOnScheduleCount}</if>
+        </where>
+    </select>
+    
+    <select id="selectPlmProjectById" parameterType="Long" resultMap="PlmProjectResult">
+        <include refid="selectPlmProjectVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertPlmProject" parameterType="PlmProject" useGeneratedKeys="true" keyProperty="id">
+        insert into plm_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectNumber != null">projectNumber,</if>
+            <if test="projectName != null">projectName,</if>
+            <if test="businessDivision != null">businessDivision,</if>
+            <if test="projectPlanStartTime != null">projectPlanStartTime,</if>
+            <if test="projectActualStartTime != null">projectActualStartTime,</if>
+            <if test="projectActualEndTime != null">projectActualEndTime,</if>
+            <if test="projectState != null">projectState,</if>
+            <if test="projectManager != null">projectManager,</if>
+            <if test="projectCompletedOnScheduleCount != null">projectCompletedOnScheduleCount,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectNumber != null">#{projectNumber},</if>
+            <if test="projectName != null">#{projectName},</if>
+            <if test="businessDivision != null">#{businessDivision},</if>
+            <if test="projectPlanStartTime != null">#{projectPlanStartTime},</if>
+            <if test="projectActualStartTime != null">#{projectActualStartTime},</if>
+            <if test="projectActualEndTime != null">#{projectActualEndTime},</if>
+            <if test="projectState != null">#{projectState},</if>
+            <if test="projectManager != null">#{projectManager},</if>
+            <if test="projectCompletedOnScheduleCount != null">#{projectCompletedOnScheduleCount},</if>
+         </trim>
+    </insert>
+
+
+    <!-- 批量插入 -->
+    <insert id="insertPlmProjectBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO plm_project
+        (projectNumber,
+         projectName,
+         businessDivision,
+         projectPlanStartTime,
+         projectActualStartTime,
+         projectActualEndTime,
+         projectState,
+         projectManager,
+         projectCompletedOnScheduleCount)
+        values
+        <foreach collection="plmProjectList" item="item" separator=",">
+            (#{item.projectNumber},
+            #{item.projectName},
+            #{item.businessDivision},
+            #{item.projectPlanStartTime,jdbcType=TIMESTAMP},
+            #{item.projectActualStartTime,jdbcType=TIMESTAMP},
+            #{item.projectActualEndTime,jdbcType=TIMESTAMP},
+            #{item.projectState},
+            #{item.projectManager},
+            #{item.projectCompletedOnScheduleCount})
+        </foreach>
+    </insert>
+
+
+    <update id="updatePlmProject" parameterType="PlmProject">
+        update plm_project
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectNumber != null">projectNumber = #{projectNumber},</if>
+            <if test="projectName != null">projectName = #{projectName},</if>
+            <if test="businessDivision != null">businessDivision = #{businessDivision},</if>
+            <if test="projectPlanStartTime != null">projectPlanStartTime = #{projectPlanStartTime},</if>
+            <if test="projectActualStartTime != null">projectActualStartTime = #{projectActualStartTime},</if>
+            <if test="projectActualEndTime != null">projectActualEndTime = #{projectActualEndTime},</if>
+            <if test="projectState != null">projectState = #{projectState},</if>
+            <if test="projectManager != null">projectManager = #{projectManager},</if>
+            <if test="projectCompletedOnScheduleCount != null">projectCompletedOnScheduleCount = #{projectCompletedOnScheduleCount},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePlmProjectById" parameterType="Long">
+        delete from plm_project where id = #{id}
+    </delete>
+
+    <delete id="deletePlmProjectByIds" parameterType="String">
+        delete from plm_project where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="clearAllProjects">
+        DELETE FROM plm_project
+    </delete>
+</mapper>

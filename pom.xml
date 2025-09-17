@@ -229,6 +229,15 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.3.0</version>
             </plugin>
+
+            <!--打包外部jar-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

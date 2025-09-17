@@ -172,6 +172,30 @@ xss:
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
 
+## plm项目信息同步配置（测试）
+#plm:
+#  project_task:
+#    windchill_base_url: http://192.168.4.134/Windchill
+#    host: 192.168.4.134
+#    username: wcadmin
+#    password: wcadmin
+#    get_token_url: /servlet/odata/PTC/GetCSRFToken()
+#    get_projectInfo_url: /servlet/rest/WindchillInterface/releaseWindchillProjectCount
+#    auth: wcadmin:wcadmin
+
+
+# plm项目信息同步配置（正式）
+plm:
+  project_task:
+    windchill_base_url: http://192.168.4.246/Windchill
+    host: 192.168.4.246
+    username: wcadmin
+    password: wcadmin
+    get_token_url: /servlet/odata/PTC/GetCSRFToken()
+    get_projectInfo_url: /servlet/rest/WindchillInterface/releaseWindchillProjectCount
+    auth: wcadmin:wcadmin
+
+
 
 
 
