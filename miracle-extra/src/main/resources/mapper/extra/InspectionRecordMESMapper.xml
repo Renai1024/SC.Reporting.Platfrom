@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.InspectionRecordMESMapper">
+    
+    <resultMap type="InspectionRecordMES" id="InspectionRecordMESResult">
+        <result property="id"    column="id"    />
+        <result property="serialNumber"    column="serial_number"    />
+        <result property="result1"    column="result1"    />
+        <result property="result2"    column="result2"    />
+        <result property="result3"    column="result3"    />
+        <result property="appearanceInspection"    column="appearance_inspection"    />
+        <result property="createBy1"    column="create_by1"    />
+        <result property="createTime1"    column="create_time1"    />
+        <result property="createBy2"    column="create_by2"    />
+        <result property="createTime2"    column="create_time2"    />
+        <result property="createBy3"    column="create_by3"    />
+        <result property="createTime3"    column="create_time3"    />
+        <result property="boxCode"    column="box_code"    />
+        <result property="customerBoxCode"    column="customer_box_code"    />
+    </resultMap>
+
+    <sql id="selectInspectionRecordMESVo">
+        select *
+        from mes_inspection_record
+    </sql>
+
+    <sql id="selectInspectionRecordMESVo1">
+        select count(*) from mes_inspection_record1
+    </sql>
+
+    <sql id="selectInspectionRecordMESVo2">
+        select count(*) from mes_inspection_record2
+    </sql>
+
+    <sql id="selectInspectionRecordMESVo3">
+        select count(*) from mes_inspection_record3
+    </sql>
+
+    <select id="selectInspectionRecordMESList" parameterType="InspectionRecordMES" resultMap="InspectionRecordMESResult">
+        <include refid="selectInspectionRecordMESVo"/>
+        <where>  
+            <if test="serialNumber != null  and serialNumber != ''"> and serial_number like concat('%',#{serialNumber},'%')</if>
+            <if test="createBy1 != null  and serialNumber != ''"> and create_by1 like concat('%',#{createBy1},'%')</if>
+            <if test="createBy2 != null  and serialNumber != ''"> and create_by2 like concat('%',#{createBy2},'%')</if>
+            <if test="createBy3 != null  and serialNumber != ''"> and create_by3 like concat('%',#{createBy3},'%')</if>
+            <if test="createTime1 != null"> and create_time1 &gt;= #{createTime1} and create_time1 &lt; DATE_ADD(#{createTime1}, interval 1 day) </if>
+            <if test="createTime2 != null"> and create_time2 &gt;= #{createTime2} and create_time2 &lt; DATE_ADD(#{createTime2}, interval 1 day) </if>
+            <if test="createTime3 != null"> and create_time3 &gt;= #{createTime3} and create_time3 &lt; DATE_ADD(#{createTime3}, interval 1 day) </if>
+            <if test="boxCode != null  and boxCode != ''"> and box_code like concat('%',#{boxCode},'%')</if>
+            <if test="customerBoxCode != null  and customerBoxCode != ''"> and customer_box_code like concat('%',#{customerBoxCode},'%')</if>
+        </where>
+        order by create_time1 desc , create_time2 desc , create_time3 desc
+    </select>
+    
+    <select id="selectInspectionRecordMESById" parameterType="Long" resultMap="InspectionRecordMESResult">
+        <include refid="selectInspectionRecordMESVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectInspectionRecordMESBySerialNumber" parameterType="String" resultMap="InspectionRecordMESResult">
+        <include refid="selectInspectionRecordMESVo"/>
+        where serial_number = #{serialNumber}
+    </select>
+
+    <select id="selectInspectionRecordMESBySerialNumberCount" parameterType="String" resultType="java.lang.Integer">
+        select count(*) from mes_inspection_record
+        where serial_number = #{serialNumber}
+    </select>
+
+    <select id="selectInspectionRecordMESBySerialNumberCount1" parameterType="String" resultType="java.lang.Integer">
+        select count(*) from mes_inspection_record1
+        where serial_number = #{serialNumber}
+    </select>
+
+    <select id="selectInspectionRecordMESBySerialNumberCount2" parameterType="String" resultType="java.lang.Integer">
+        select count(*) from mes_inspection_record2
+        where serial_number = #{serialNumber}
+    </select>
+
+    <select id="selectInspectionRecordMESBySerialNumberCount3" parameterType="String" resultType="java.lang.Integer">
+        select count(*) from mes_inspection_record3
+        where serial_number = #{serialNumber}
+    </select>
+
+    <select id="selectInspectionRecordMESByBoxCodeCount" parameterType="String" resultType="java.lang.Integer">
+        select count(*) from mes_inspection_record
+        where box_code = #{boxCode}
+    </select>
+
+    <select id="selectInspectionRecordMESByBoxCode" parameterType="String" resultMap="InspectionRecordMESResult">
+        <include refid="selectInspectionRecordMESVo"/>
+        where box_code = #{boxCode}
+    </select>
+
+    <select id="selectInspectionRecordMESByCustomerBoxCode" parameterType="String" resultMap="InspectionRecordMESResult">
+        <include refid="selectInspectionRecordMESVo"/>
+        where customer_box_code = #{customerCode}
+    </select>
+
+
+    <!--工序主表-->
+    <insert id="insertInspectionRecordMES" parameterType="InspectionRecordMES" useGeneratedKeys="true" keyProperty="id">
+        insert into mes_inspection_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serialNumber != null and serialNumber != ''">serial_number,</if>
+            <if test="result1 != null">result1,</if>
+            <if test="result2 != null">result2,</if>
+            <if test="result3 != null">result3,</if>
+            <if test="appearanceInspection != null">appearance_inspection,</if>
+            <if test="createBy1 != null">create_by1,</if>
+            <if test="createTime1 != null">create_time1,</if>
+            <if test="createBy2 != null">create_by2,</if>
+            <if test="createTime2 != null">create_time2,</if>
+            <if test="createBy3 != null">create_by3,</if>
+            <if test="createTime3 != null">create_time3,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serialNumber != null and serialNumber != ''">#{serialNumber},</if>
+            <if test="result1 != null">#{result1},</if>
+            <if test="result2 != null">#{result2},</if>
+            <if test="result3 != null">#{result3},</if>
+            <if test="appearanceInspection != null">#{appearanceInspection},</if>
+            <if test="createBy1 != null">#{createBy1},</if>
+            <if test="createTime1 != null">#{createTime1},</if>
+            <if test="createBy2 != null">#{createBy2},</if>
+            <if test="createTime2 != null">#{createTime2},</if>
+            <if test="createBy3 != null">#{createBy3},</if>
+            <if test="createTime3 != null">#{createTime3},</if>
+        </trim>
+    </insert>
+
+    <!--工序一-->
+    <insert id="insertInspectionRecordMES1" parameterType="InspectionRecordMES" useGeneratedKeys="true" keyProperty="id">
+        insert into mes_inspection_record1
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serialNumber != null and serialNumber != ''">serial_number,</if>
+            <if test="result1 != null">result1,</if>
+            <if test="result2 != null">result2,</if>
+            <if test="createBy1 != null">create_by1,</if>
+            <if test="createTime1 != null">create_time1,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serialNumber != null and serialNumber != ''">#{serialNumber},</if>
+            <if test="result1 != null">#{result1},</if>
+            <if test="result2 != null">#{result2},</if>
+            <if test="createBy1 != null">#{createBy1},</if>
+            <if test="createTime1 != null">#{createTime1},</if>
+         </trim>
+    </insert>
+
+    <!--工序二-->
+    <insert id="insertInspectionRecordMES2" parameterType="InspectionRecordMES" useGeneratedKeys="true" keyProperty="id">
+        insert into mes_inspection_record2
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serialNumber != null and serialNumber != ''">serial_number,</if>
+            <if test="result3 != null">result3,</if>
+            <if test="createBy2 != null">create_by2,</if>
+            <if test="createTime2 != null">create_time2,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serialNumber != null and serialNumber != ''">#{serialNumber},</if>
+            <if test="result3 != null">#{result3},</if>
+            <if test="createBy2 != null">#{createBy2},</if>
+            <if test="createTime2 != null">#{createTime2},</if>
+        </trim>
+    </insert>
+
+    <!--工序三-->
+    <insert id="insertInspectionRecordMES3" parameterType="InspectionRecordMES" useGeneratedKeys="true" keyProperty="id">
+        insert into mes_inspection_record3
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serialNumber != null and serialNumber != ''">serial_number,</if>
+            <if test="appearanceInspection != null">appearance_inspection,</if>
+            <if test="createBy3 != null">create_by3,</if>
+            <if test="createTime3 != null">create_time3,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serialNumber != null and serialNumber != ''">#{serialNumber},</if>
+            <if test="appearanceInspection != null">#{appearanceInspection},</if>
+            <if test="createBy3 != null">#{createBy3},</if>
+            <if test="createTime3 != null">#{createTime3},</if>
+        </trim>
+    </insert>
+
+    <update id="updateInspectionRecordMES" parameterType="InspectionRecordMES">
+        update mes_inspection_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="serialNumber != null and serialNumber != ''">serial_number = #{serialNumber},</if>
+            <if test="result1 != null">result1 = #{result1},</if>
+            <if test="result2 != null">result2 = #{result2},</if>
+            <if test="result3 != null">result3 = #{result3},</if>
+            <if test="appearanceInspection != null">appearance_inspection = #{appearanceInspection},</if>
+            <if test="createBy1 != null">create_by1 = #{createBy1},</if>
+            <if test="createTime1 != null">create_time1 = #{createTime1},</if>
+            <if test="createBy2 != null">create_by2 = #{createBy2},</if>
+            <if test="createTime2 != null">create_time2 = #{createTime2},</if>
+            <if test="createBy3 != null">create_by3 = #{createBy3},</if>
+            <if test="createTime3 != null">create_time3 = #{createTime3},</if>
+            <if test="boxCode != null">box_code = #{boxCode},</if>
+            <if test="customerBoxCode != null">customer_box_code = #{customerBoxCode},</if>
+        </trim>
+        where serial_number = #{serialNumber}
+    </update>
+
+    <update id="updateInspectionRecordMESCustomerBoxCode" parameterType="String">
+        update mes_inspection_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="customerBoxCode != null">customer_box_code = #{customerBoxCode},</if>
+        </trim>
+        where box_code = #{boxCode}
+    </update>
+
+    <delete id="deleteInspectionRecordMESById" parameterType="Long">
+        delete from mes_inspection_record where id = #{id}
+    </delete>
+
+    <delete id="deleteInspectionRecordMESBySerialNumber1" parameterType="String">
+        delete from mes_inspection_record1 where serial_number = #{serialNumber}
+    </delete>
+
+    <delete id="deleteInspectionRecordMESBySerialNumber2" parameterType="String">
+        delete from mes_inspection_record2 where serial_number = #{serialNumber}
+    </delete>
+
+    <delete id="deleteInspectionRecordMESBySerialNumber3" parameterType="String">
+        delete from mes_inspection_record3 where serial_number = #{serialNumber}
+    </delete>
+
+    <delete id="deleteInspectionRecordMESByIds" parameterType="String">
+        delete from mes_inspection_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteInspectionRecordMESBySerialNumbers1" parameterType="String">
+        delete from mes_inspection_record where serial_number in
+        <foreach item="serialNumber" collection="array" open="(" separator="," close=")">
+            #{serialNumber}
+        </foreach>
+    </delete>
+
+    <delete id="deleteInspectionRecordMESBySerialNumbers2" parameterType="String">
+        delete from mes_inspection_record where serial_number in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{serialNumber}
+        </foreach>
+    </delete>
+
+    <delete id="deleteInspectionRecordMESBySerialNumbers3" parameterType="String">
+        delete from mes_inspection_record where serial_number in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{serialNumber}
+        </foreach>
+    </delete>
+
+</mapper>
