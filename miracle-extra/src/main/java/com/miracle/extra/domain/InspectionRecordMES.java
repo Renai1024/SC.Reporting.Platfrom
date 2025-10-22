@@ -28,43 +28,43 @@ public class InspectionRecordMES extends BaseEntity
     private String serialNumber;
 
     /** 结果1 */
-    @Excel(name = "结果1")
+    @Excel(name = "17.5尺寸检验结果", dictType = "sys_test_result")
     private String result1;
 
     /** 结果2 */
-    @Excel(name = "结果2")
+    @Excel(name = "47.5尺寸检验结果", dictType = "sys_test_result")
     private String result2;
 
     /** 结果3 */
-    @Excel(name = "结果3")
+    @Excel(name = "610尺寸检验结果", dictType = "sys_test_result")
     private String result3;
 
     /** 外观检验 */
-    @Excel(name = "外观检验")
+    @Excel(name = "外观检验结果", dictType = "sys_test_result")
     private String appearanceInspection;
 
     /** 工序一创建人 */
-    @Excel(name = "工序一创建人")
+    //@Excel(name = "17.5/47.5尺寸检验人")
     private String createBy1;
 
     /** 工序一创建时间 */
-    @Excel(name = "工序一创建时间")
+    @Excel(name = "17.5/47.5尺寸检验时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date createTime1;
 
     /** 工序二创建人 */
-    @Excel(name = "工序二创建人")
+    //@Excel(name = "610尺寸检验人")
     private String createBy2;
 
     /** 工序二创建时间 */
-    @Excel(name = "工序二创建时间")
+    @Excel(name = "610尺寸检验时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date createTime2;
 
     /** 工序三创建人 */
-    @Excel(name = "工序三创建人")
+    //@Excel(name = "外观检验人")
     private String createBy3;
 
     /** 工序三创建时间 */
-    @Excel(name = "工序三创建时间")
+    @Excel(name = "外观检验时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date createTime3;
 
     /** 箱码 */

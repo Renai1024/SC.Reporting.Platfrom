@@ -3,43 +3,43 @@ spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         druid:
-#            # 正式主库数据源
-#            master:
-#                url: jdbc:mysql://192.168.4.191:3306/miracle?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-#                username: root
-#                password: sanco@mysql
-
-
-            # 测试主库数据源
+            # 正式主库数据源
             master:
-                url: jdbc:mysql://192.168.4.240:3306/miracle?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                url: jdbc:mysql://192.168.4.191:3306/miracle?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
                 username: root
-                password: Sanco#Mes1=
+                password: sanco@mysql
 
 
-#            # 从库数据源
-#            slave:
-#                # 从数据源开关/默认关闭
-#                enabled: true
-#                url: jdbc:sqlserver://192.168.4.71:1433;databaseName=SC;trustServerCertificate=true;encrypt=true;
-#                username: bs_guest
-#                password: bs_guest@123
+#            # 测试主库数据源
+#            master:
+#                url: jdbc:mysql://192.168.4.240:3306/miracle?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+#                username: root
+#                password: Sanco#Mes1=
 
-#            #从数据源2
-#            slave2:
-#                # 从数据源开关/默认关闭
-#                enabled: true
-#                url: jdbc:sqlserver://192.168.4.191:17933;databaseName=SCYCDATA;trustServerCertificate=true;encrypt=true;
-#                username: sa
-#                password: 1234!QAZ2wsx
+
+            # 从库数据源
+            slave:
+                # 从数据源开关/默认关闭
+                enabled: true
+                url: jdbc:sqlserver://192.168.4.71:1433;databaseName=SC;trustServerCertificate=true;encrypt=true;
+                username: bs_guest
+                password: bs_guest@123
 
             #从数据源2
             slave2:
                 # 从数据源开关/默认关闭
                 enabled: true
-                url: jdbc:sqlserver://192.168.4.69:1433;databaseName=SC;trustServerCertificate=true;encrypt=true;
+                url: jdbc:sqlserver://192.168.4.191:17933;databaseName=SCYCDATA;trustServerCertificate=true;encrypt=true;
                 username: sa
                 password: 1234!QAZ2wsx
+
+#            #从数据源2
+#            slave2:
+#                # 从数据源开关/默认关闭
+#                enabled: true
+#                url: jdbc:sqlserver://192.168.4.69:1433;databaseName=SC;trustServerCertificate=true;encrypt=true;
+#                username: sa
+#                password: 1234!QAZ2wsx
 
             # 初始连接数
             initialSize: 5

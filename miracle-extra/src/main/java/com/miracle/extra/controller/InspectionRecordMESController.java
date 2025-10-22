@@ -53,7 +53,7 @@ public class InspectionRecordMESController extends BaseController
     /**
      * 导出检验数据列表
      */
-    @PreAuthorize("@ss.hasPermi('extra:mes_inspection_record:export')")
+    //@PreAuthorize("@ss.hasPermi('extra:mes_inspection_record:export')")
     @Log(title = "检验数据", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, InspectionRecordMES inspectionRecordMES)
@@ -77,7 +77,7 @@ public class InspectionRecordMESController extends BaseController
      * 新增工序一检验数据
      */
     @PreAuthorize("@ss.hasPermi('extra:mes_inspection_record:add1')")
-    @Log(title = "工序一检验数据", businessType = BusinessType.INSERT)
+    @Log(title = "17.5/47.5检验数据", businessType = BusinessType.INSERT)
     @PostMapping("/add1")
     public AjaxResult add1(@RequestBody InspectionRecordMES inspectionRecordMES)
     {
@@ -92,7 +92,7 @@ public class InspectionRecordMESController extends BaseController
      * 新增工序二检验数据
      */
     @PreAuthorize("@ss.hasPermi('extra:mes_inspection_record:add2')")
-    @Log(title = "工序二检验数据", businessType = BusinessType.INSERT)
+    @Log(title = "610检验数据", businessType = BusinessType.INSERT)
     @PostMapping("/add2")
     public AjaxResult add2(@RequestBody InspectionRecordMES inspectionRecordMES)
     {
@@ -103,7 +103,7 @@ public class InspectionRecordMESController extends BaseController
      * 新增工序三检验数据
      */
     @PreAuthorize("@ss.hasPermi('extra:mes_inspection_record:add3')")
-    @Log(title = "工序三检验数据", businessType = BusinessType.INSERT)
+    @Log(title = "外观检验数据", businessType = BusinessType.INSERT)
     @PostMapping("/add3")
     public AjaxResult add3(@RequestBody InspectionRecordMES inspectionRecordMES)
     {
