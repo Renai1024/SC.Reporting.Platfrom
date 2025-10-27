@@ -27,9 +27,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectNumber != null  and projectNumber != ''"> and projectNumber = #{projectNumber}</if>
             <if test="projectName != null  and projectName != ''"> and projectName like concat('%', #{projectName}, '%')</if>
             <if test="businessDivision != null  and businessDivision != ''"> and businessDivision = #{businessDivision}</if>
-            <if test="projectPlanStartTime != null "> and projectPlanStartTime = #{projectPlanStartTime}</if>
-            <if test="projectActualStartTime != null "> and projectActualStartTime = #{projectActualStartTime}</if>
-            <if test="projectActualEndTime != null "> and projectActualEndTime = #{projectActualEndTime}</if>
+            <if test="projectPlanStartTime != null "> and projectPlanStartTime &gt;= #{projectPlanStartTime} and projectPlanStartTime &lt; DATE_ADD(#{projectPlanStartTime}, interval 1 day)</if>
+            <if test="projectActualStartTime != null "> and projectActualStartTime &gt;= #{projectActualStartTime} and projectActualStartTime &lt; DATE_ADD(#{projectActualStartTime}, interval 1 day)</if>
+            <if test="projectActualEndTime != null "> and projectActualEndTime &gt;= #{projectActualEndTime} and projectActualEndTime &lt; DATE_ADD(#{projectActualEndTime}, interval 1 day)</if>
             <if test="projectState != null  and projectState != ''"> and projectState = #{projectState}</if>
             <if test="projectManager != null  and projectManager != ''"> and projectManager = #{projectManager}</if>
             <if test="projectCompletedOnScheduleCount != null  and projectCompletedOnScheduleCount != ''"> and projectCompletedOnScheduleCount = #{projectCompletedOnScheduleCount}</if>

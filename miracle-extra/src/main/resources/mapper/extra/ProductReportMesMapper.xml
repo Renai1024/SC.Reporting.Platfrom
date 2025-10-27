@@ -33,7 +33,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <sql id="selectProductReportMesVo">
         select id, material_no, old_material_no, order_no, info1, info2, info3, info4, info5, info6, barcode, test_start_time, test_end_time, test_result, message_escape, test_status, client_ip, product_type, customer_flag, create_by, create_time, update_by, update_time
         from product_report_mes
-        order by test_start_time desc
     </sql>
 
     <select id="selectProductReportMesList" parameterType="ProductReportMes" resultMap="ProductReportMesResult">
@@ -49,8 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="info5 != null  and info5.trim().length() > 0"> and info5 like concat('%', #{info5}, '%')</if>
             <if test="info6 != null  and info6.trim().length() > 0"> and info6 like concat('%', #{info6}, '%')</if>
             <if test="barcode != null  and barcode.trim().length() > 0"> and barcode like concat('%', #{barcode}, '%')</if>
-            <if test="testStartTime != null "> and test_start_time &gt;= #{testStartTime}</if>
-            <if test="testEndTime != null "> and test_end_time &lt;= #{testEndTime}</if>
+            <if test="testStartTime != null "> and test_start_time &gt;= #{testStartTime} and test_start_time &lt; DATE_ADD(#{testStartTime}, interval 1 day)</if>
             <if test="testResult != null  and testResult.trim().length() > 0"> and test_result like concat('%', #{testResult}, '%')</if>
             <if test="messageEscape != null  and messageEscape.trim().length() > 0"> and message_escape like concat('%', #{messageEscape}, '%')</if>
             <if test="testStatus != null  and testStatus.trim().length() > 0"> and test_status like concat('%', #{testStatus}, '%')</if>
@@ -58,6 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="productType != null  and productType.trim().length() > 0"> and product_type like concat('%', #{productType}, '%')</if>
             <if test="customerFlag != null  and customerFlag.trim().length() > 0"> and customer_flag like concat('%', #{customerFlag}, '%')</if>
         </where>
+        order by test_start_time desc
     </select>
     
     <select id="selectProductReportMesById" parameterType="Long" resultMap="ProductReportMesResult">

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.ProdScrewTorqueMapper">
+    
+    <resultMap type="ProdScrewTorque" id="ProdScrewTorqueResult">
+        <result property="id"    column="id"    />
+        <result property="qrCode"    column="qr_code"    />
+        <result property="screwIndex"    column="screw_index"    />
+        <result property="lockTime"    column="lock_time"    />
+        <result property="targetTorque"    column="target_torque"    />
+        <result property="actualTorque"    column="actual_torque"    />
+        <result property="lockCircle"    column="lock_circle"    />
+        <result property="lockDuration"    column="lock_duration"    />
+        <result property="lockResult"    column="lock_result"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectProdScrewTorqueVo">
+        select id, qr_code, screw_index, lock_time, target_torque, actual_torque, lock_circle, lock_duration, lock_result, create_by, create_time from prod_screw_torque
+    </sql>
+
+    <select id="selectProdScrewTorqueList" parameterType="ProdScrewTorque" resultMap="ProdScrewTorqueResult">
+        <include refid="selectProdScrewTorqueVo"/>
+        <where>  
+            <if test="qrCode != null  and qrCode != ''"> and qr_code like concat('%', #{qrCode}, '%')</if>
+            <if test="screwIndex != null  and screwIndex != ''"> and screw_index like concat('%', #{screwIndex}, '%')</if>
+            <if test="lockTime != null "> and lock_time &gt;= #{lockTime} and lock_time &lt; DATE_ADD(#{lockTime}, interval 1 day)</if>
+            <if test="targetTorque != null  and targetTorque != ''"> and target_torque = #{targetTorque}</if>
+            <if test="actualTorque != null  and actualTorque != ''"> and actual_torque = #{actualTorque}</if>
+            <if test="lockCircle != null  and lockCircle != ''"> and lock_circle like concat('%', #{lockCircle}, '%')</if>
+            <if test="lockDuration != null  and lockDuration != ''"> and lock_duration like concat('%', #{lockDuration}, '%')</if>
+            <if test="lockResult != null  and lockResult != ''"> and lock_result = #{lockResult}</if>
+        </where>
+        order by lock_time desc
+    </select>
+    
+    <select id="selectProdScrewTorqueById" parameterType="Long" resultMap="ProdScrewTorqueResult">
+        <include refid="selectProdScrewTorqueVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertProdScrewTorque" parameterType="ProdScrewTorque" useGeneratedKeys="true" keyProperty="id">
+        insert into prod_screw_torque
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCode != null">qr_code,</if>
+            <if test="screwIndex != null">screw_index,</if>
+            <if test="lockTime != null">lock_time,</if>
+            <if test="targetTorque != null">target_torque,</if>
+            <if test="actualTorque != null">actual_torque,</if>
+            <if test="lockCircle != null">lock_circle,</if>
+            <if test="lockDuration != null">lock_duration,</if>
+            <if test="lockResult != null">lock_result,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="qrCode != null">#{qrCode},</if>
+            <if test="screwIndex != null">#{screwIndex},</if>
+            <if test="lockTime != null">#{lockTime},</if>
+            <if test="targetTorque != null">#{targetTorque},</if>
+            <if test="actualTorque != null">#{actualTorque},</if>
+            <if test="lockCircle != null">#{lockCircle},</if>
+            <if test="lockDuration != null">#{lockDuration},</if>
+            <if test="lockResult != null">#{lockResult},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <!--批量新增-->
+    <insert id="insertProdScrewTorqueBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO prod_screw_torque
+        (qr_code,
+         screw_index,
+         lock_time,
+         target_torque,
+         actual_torque,
+         lock_circle,
+         lock_duration,
+         lock_result,
+         create_by,
+         create_time)
+        values
+        <foreach collection="prodScrewTorqueList" item="item" separator=",">
+            (#{item.qrCode},
+             #{item.screwIndex},
+             #{item.lockTime},
+             #{item.targetTorque},
+             #{item.actualTorque},
+             #{item.lockCircle},
+             #{item.lockDuration},
+             #{item.lockResult},
+             #{item.createBy},
+             #{item.createTime})
+        </foreach>
+    </insert>
+
+
+    <update id="updateProdScrewTorque" parameterType="ProdScrewTorque">
+        update prod_screw_torque
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="qrCode != null">qr_code = #{qrCode},</if>
+            <if test="screwIndex != null">screw_index = #{screwIndex},</if>
+            <if test="lockTime != null">lock_time = #{lockTime},</if>
+            <if test="targetTorque != null">target_torque = #{targetTorque},</if>
+            <if test="actualTorque != null">actual_torque = #{actualTorque},</if>
+            <if test="lockCircle != null">lock_circle = #{lockCircle},</if>
+            <if test="lockDuration != null">lock_duration = #{lockDuration},</if>
+            <if test="lockResult != null">lock_result = #{lockResult},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProdScrewTorqueById" parameterType="Long">
+        delete from prod_screw_torque where id = #{id}
+    </delete>
+
+    <delete id="deleteProdScrewTorqueByIds" parameterType="String">
+        delete from prod_screw_torque where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
