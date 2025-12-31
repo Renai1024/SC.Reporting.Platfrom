@@ -11,7 +11,7 @@ import com.miracle.common.annotation.Excel;
 
 /**
  * PLM项目对象 plm_project
- * 
+ *
  * @author miracle
  * @date 2025-09-10
  */
@@ -61,6 +61,10 @@ public class PlmProject extends BaseEntity
     /** 项目计划达成率 */
     @Excel(name = "项目计划达成率")
     private String projectCompletedOnScheduleCount;
+
+    /** 项目标记 */
+    @Excel(name = "项目标记")
+    private String projectMark;
 
 
 }

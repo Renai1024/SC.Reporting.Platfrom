@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.ErpInfoMapper">
+
+    <resultMap type="ErpInfo" id="ErpInfoResult">
+        <result property="workshopName"    column="workshop_name"    />
+        <result property="workshopCode"    column="workshop_code"    />
+        <result property="workerName"    column="worker_name"    />
+        <result property="workerCode"    column="worker_code"    />
+        <result property="materialCode"    column="material_code"    />
+        <result property="materialName"    column="material_name"    />
+    </resultMap>
+
+    <sql id="selectWorkshopVo">
+        select workshop_name, workshop_code from SANCO.V_REPORT_WORKSHOP
+    </sql>
+
+    <sql id="selectWorkerVo">
+        select worker_name, worker_code from SANCO.V_REPORT_WORKER
+    </sql>
+
+    <sql id="selectMaterialVo">
+        select material_name, material_code from SANCO.V_REPORT_MATERIAL
+    </sql>
+
+    <select id="selectWorkshopList" parameterType="ErpInfo" resultMap="ErpInfoResult">
+        <include refid="selectWorkshopVo"/>
+        <where>
+            <if test="workshopName != null and workshopName != ''" >and workshop_name like concat('%',#{workshopName},'%')</if>
+            <if test="workshopCode != null and workshopCode != ''" >and workshop_code like concat('%',#{workshopCode},'%')</if>
+        </where>
+    </select>
+
+    <select id="selectWorkshopByName" parameterType="String" resultMap="ErpInfoResult">
+        <include refid="selectWorkshopVo"/>
+        where workshop_name = #{workshopName}
+    </select>
+
+    <select id="selectWorkshopByCode" parameterType="String" resultMap="ErpInfoResult">
+        <include refid="selectWorkshopVo"/>
+        where workshop_code = #{workshopCode}
+    </select>
+
+    <select id="selectWorkerList" parameterType="ErpInfo" resultMap="ErpInfoResult">
+        <include refid="selectWorkerVo"/>
+        <where>
+            <if test="workerName != null and workerName != ''" >and worker_name like concat('%',#{workerName},'%')</if>
+            <if test="workerCode != null and workerCode != ''" >and worker_code like concat('%',#{workerCode},'%')</if>
+        </where>
+    </select>
+
+    <select id="selectWorkerByName" parameterType="String" resultMap="ErpInfoResult">
+        <include refid="selectWorkerVo"/>
+        where worker_name = #{workerName}
+    </select>
+
+    <select id="selectWorkerByCode" parameterType="String" resultMap="ErpInfoResult">
+        <include refid="selectWorkerVo"/>
+        where worker_code = #{workerCode}
+    </select>
+
+    <select id="selectMaterialByCode" parameterType="String" resultMap="ErpInfoResult">
+        <include refid="selectMaterialVo"/>
+        where material_code = #{materialCode}
+    </select>
+
+    <select id="selectMaterialByName" parameterType="String" resultMap="ErpInfoResult">
+        <include refid="selectMaterialVo"/>
+        where material_name = #{materialName}
+    </select>
+
+    <!-- 通用查询车间（编码或名称） -->
+    <select id="searchWorkshop" parameterType="String" resultMap="ErpInfoResult">
+        <include refid="selectWorkshopVo"/>
+        <where>
+            <if test="searchText != null and searchText != ''">
+                (workshop_name like concat('%',#{searchText},'%')
+                or workshop_code like concat('%',#{searchText},'%'))
+            </if>
+        </where>
+                order by workshop_code
+    </select>
+
+    <!-- 通用查询员工（编码或名称） -->
+    <select id="searchWorker" parameterType="String" resultMap="ErpInfoResult">
+        <include refid="selectWorkerVo"/>
+        <where>
+            <if test="searchText != null and searchText != ''">
+                (worker_name like concat('%',#{searchText},'%')
+                or worker_code like concat('%',#{searchText},'%'))
+            </if>
+        </where>
+                order by worker_code
+    </select>
+
+    <!-- 通用查询物料（编码或名称） -->
+    <select id="searchMaterial" parameterType="String" resultMap="ErpInfoResult">
+        <include refid="selectMaterialVo"/>
+        <where>
+            <if test="searchText != null and searchText != ''">
+                (material_name like concat('%',#{searchText},'%')
+                or material_code like concat('%',#{searchText},'%'))
+            </if>
+        </where>
+                order by material_code
+    </select>
+
+
+
+</mapper>

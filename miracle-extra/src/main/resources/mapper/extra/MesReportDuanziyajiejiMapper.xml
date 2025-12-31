@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.MesReportDuanziyajiejiMapper">
+
+    <resultMap type="com.miracle.extra.domain.MesReportDuanziyajieji" id="MesReportDuanziyajiejiResult">
+        <result property="id"    column="id"    />
+        <result property="datatime"    column="datatime"    />
+        <result property="workresult"    column="workresult"    />
+        <result property="chanliangxuhao"    column="chanliangxuhao"    />
+        <result property="xianlanguige"    column="xianlanguige"    />
+        <result property="shengchanmoshi"    column="shengchanmoshi"    />
+        <result property="tiaoma"    column="tiaoma"    />
+        <result property="hantoubianhao"    column="hantoubianhao"    />
+        <result property="hanjieshijian"    column="hanjieshijian"    />
+        <result property="chufagaodu"    column="chufagaodu"    />
+        <result property="chengxinggaodu"    column="chengxinggaodu"    />
+        <result property="yali"    column="yali"    />
+        <result property="zhenfu"    column="zhenfu"    />
+        <result property="nengliang"    column="nengliang"    />
+        <result property="pinlv"    column="pinlv"    />
+        <result property="pingjungonglv"    column="pingjungonglv"    />
+    </resultMap>
+
+    <sql id="selectMesReportDuanziyajiejiVo">
+        select datatime,
+               workresult,
+               chanliangxuhao,
+               xianlanguige,
+               shengchanmoshi,
+               tiaoma,
+               hantoubianhao,
+               hanjieshijian,
+               chufagaodu,
+               chengxinggaodu,
+               yali,
+               zhenfu,
+               nengliang,
+               pinlv,
+               pingjungonglv
+        from dbo.DuanZiYaJieJi
+    </sql>
+
+    <select id="selectMesReportDuanziyajiejiList" parameterType="com.miracle.extra.domain.MesReportDuanziyajieji" resultMap="MesReportDuanziyajiejiResult">
+        <include refid="selectMesReportDuanziyajiejiVo"/>
+        <where>
+            <if test="testStartTime != null "> and datatime &gt; #{testStartTime}</if>
+            <if test="testEndTime != null "> and datatime &lt; DATEADD(day, 1, #{testEndTime})</if>
+            <if test="workresult != null  and workresult != ''"> and workresult = #{workresult}</if>
+            <if test="chanliangxuhao != null  and chanliangxuhao != ''"> and chanliangxuhao like concat('%',#{chanliangxuhao},'%')</if>
+            <if test="xianlanguige != null  and xianlanguige != ''"> and xianlanguige = #{xianlanguige}</if>
+            <if test="shengchanmoshi != null  and shengchanmoshi != ''"> and shengchanmoshi = #{shengchanmoshi}</if>
+            <if test="tiaoma != null  and tiaoma != ''"> and tiaoma like concat('%',#{tiaoma},'%')</if>
+            <if test="hantoubianhao != null  and hantoubianhao != ''"> and hantoubianhao like concat('%',#{hantoubianhao},'%')</if>
+            <if test="hanjieshijian != null  and hanjieshijian != ''"> and hanjieshijian = #{hanjieshijian}</if>
+            <if test="chufagaodu != null  and chufagaodu != ''"> and chufagaodu = #{chufagaodu}</if>
+            <if test="chengxinggaodu != null  and chengxinggaodu != ''"> and chengxinggaodu = #{chengxinggaodu}</if>
+            <if test="yali != null  and yali != ''"> and yali = #{yali}</if>
+            <if test="zhenfu != null  and zhenfu != ''"> and zhenfu = #{zhenfu}</if>
+            <if test="nengliang != null  and nengliang != ''"> and nengliang = #{nengliang}</if>
+            <if test="pinlv != null  and pinlv != ''"> and pinlv = #{pinlv}</if>
+            <if test="pingjungonglv != null  and pingjungonglv != ''"> and pingjungonglv = #{pingjungonglv}</if>
+        </where>
+    </select>
+
+    <select id="selectMesReportDuanziyajiejiById" parameterType="Long" resultMap="MesReportDuanziyajiejiResult">
+        <include refid="selectMesReportDuanziyajiejiVo"/>
+        where id = #{id}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.MesWorkshopTransposeMapper">
+
+    <resultMap type="MesWorkshopTranspose" id="MesWorkshopTransposeResult">
+        <result property="id"    column="id"    />
+        <result property="snowflakeId"    column="snowflake_id"    />
+        <result property="materialCode"    column="material_code"    />
+        <result property="fromWorkshop"    column="from_workshop"    />
+        <result property="toWorkshop"    column="to_workshop"    />
+        <result property="transferQuantity"    column="transfer_quantity"    />
+        <result property="transferTime"    column="transfer_time"    />
+        <result property="transferPerson"    column="transfer_person"    />
+        <result property="confirmTime"    column="confirm_time"    />
+        <result property="receiverPerson"    column="receiver_person"    />
+        <result property="isTransferred"    column="is_transferred"    />
+        <result property="isConfirmed"    column="is_confirmed"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+
+    <sql id="selectMesWorkshopTransposeVo">
+        select id, snowflake_id, material_code, from_workshop, to_workshop, transfer_quantity, transfer_time, transfer_person, confirm_time, receiver_person, is_transferred, is_confirmed, create_by, create_time, update_by, update_time, remark from mes_workshop_transpose
+    </sql>
+
+    <select id="selectMesWorkshopTransposeList" parameterType="MesWorkshopTranspose" resultMap="MesWorkshopTransposeResult">
+        <include refid="selectMesWorkshopTransposeVo"/>
+        <where>
+            <if test="snowflakeId != null  and snowflakeId != ''"> and snowflake_id = #{snowflakeId}</if>
+            <if test="materialCode != null  and materialCode != ''"> and material_code like concat('%',#{materialCode},'%')</if>
+            <if test="fromWorkshop != null  and fromWorkshop != ''"> and from_workshop = #{fromWorkshop}</if>
+            <if test="toWorkshop != null  and toWorkshop != ''"> and to_workshop = #{toWorkshop}</if>
+            <if test="transferQuantity != null "> and transfer_quantity = #{transferQuantity}</if>
+            <if test="transferStartTime != null "> and transfer_time &gt; #{transferStartTime}</if>
+            <if test="transferEndTime != null "> and transfer_time &lt; DATEADD(day, 1, #{transferEndTime})</if>
+            <if test="transferPerson != null  and transferPerson != ''"> and transfer_person = #{transferPerson}</if>
+            <if test="confirmStartTime != null "> and confirm_time &gt; #{confirmStartTime}</if>
+            <if test="confirmEndTime != null "> and confirm_time &lt; DATEADD(day, 1, #{confirmEndTime})</if>
+            <if test="receiverPerson != null  and receiverPerson != ''"> and receiver_person = #{receiverPerson}</if>
+            <if test="isTransferred != null  and isTransferred != ''"> and is_transferred = #{isTransferred}</if>
+            <if test="isConfirmed != null  and isConfirmed != ''"> and is_confirmed = #{isConfirmed}</if>
+        </where>
+        order by transfer_time desc
+    </select>
+
+    <select id="selectMesWorkshopTransposeListUnreceived" parameterType="MesWorkshopTranspose" resultMap="MesWorkshopTransposeResult">
+        <include refid="selectMesWorkshopTransposeVo"/>
+        where is_transferred = 'Y' and is_confirmed = 'N'
+        order by transfer_time desc
+    </select>
+
+    <select id="selectMesWorkshopTransposeById" parameterType="Long" resultMap="MesWorkshopTransposeResult">
+        <include refid="selectMesWorkshopTransposeVo"/>
+        where id = #{id}
+        order by transfer_time desc
+    </select>
+
+    <select id="selectMesWorkshopTransposeListByMaterialCode" parameterType="String" resultMap="MesWorkshopTransposeResult">
+        <include refid="selectMesWorkshopTransposeVo"/>
+        where material_code like concat('%',#{materialCode},'%')
+        order by transfer_time desc
+    </select>
+
+    <select id="selectMesWorkshopTransposeBySnowflakeId" parameterType="String" resultMap="MesWorkshopTransposeResult">
+        <include refid="selectMesWorkshopTransposeVo"/>
+        where snowflake_id = #{snowflakeId}
+        order by transfer_time desc
+    </select>
+
+
+
+    <insert id="insertMesWorkshopTranspose" parameterType="MesWorkshopTranspose" useGeneratedKeys="true" keyProperty="id">
+        insert into mes_workshop_transpose
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="snowflakeId != null">snowflake_id,</if>
+            <if test="materialCode != null and materialCode != ''">material_code,</if>
+            <if test="fromWorkshop != null and fromWorkshop != ''">from_workshop,</if>
+            <if test="toWorkshop != null and toWorkshop != ''">to_workshop,</if>
+            <if test="transferQuantity != null">transfer_quantity,</if>
+            <if test="transferTime != null">transfer_time,</if>
+            <if test="transferPerson != null">transfer_person,</if>
+            <if test="confirmTime != null">confirm_time,</if>
+            <if test="receiverPerson != null">receiver_person,</if>
+            <if test="isTransferred != null">is_transferred,</if>
+            <if test="isConfirmed != null">is_confirmed,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="snowflakeId != null">#{snowflakeId},</if>
+            <if test="materialCode != null and materialCode != ''">#{materialCode},</if>
+            <if test="fromWorkshop != null and fromWorkshop != ''">#{fromWorkshop},</if>
+            <if test="toWorkshop != null and toWorkshop != ''">#{toWorkshop},</if>
+            <if test="transferQuantity != null">#{transferQuantity},</if>
+            <if test="transferTime != null">#{transferTime},</if>
+            <if test="transferPerson != null">#{transferPerson},</if>
+            <if test="confirmTime != null">#{confirmTime},</if>
+            <if test="receiverPerson != null">#{receiverPerson},</if>
+            <if test="isTransferred != null">#{isTransferred},</if>
+            <if test="isConfirmed != null">#{isConfirmed},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMesWorkshopTranspose" parameterType="MesWorkshopTranspose">
+        update mes_workshop_transpose
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="receiverPerson != null">receiver_person = #{receiverPerson},</if>
+            <if test="isConfirmed != null">is_confirmed = #{isConfirmed},</if>
+            <if test="confirmTime != null">confirm_time = #{confirmTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="changeQuantity"  parameterType="MesWorkshopTranspose">
+        update mes_workshop_transpose
+        set transfer_quantity = #{transferQuantity}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMesWorkshopTransposeById" parameterType="Long">
+        delete from mes_workshop_transpose where id = #{id}
+    </delete>
+
+    <delete id="deleteMesWorkshopTransposeByIds" parameterType="String">
+        delete from mes_workshop_transpose where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

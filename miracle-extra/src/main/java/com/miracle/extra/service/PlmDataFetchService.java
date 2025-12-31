@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -48,10 +47,6 @@ public class PlmDataFetchService {
     @Value("${plm.project_task.auth}")
     String AUTH;
 
-    /**
-     * 每天凌晨1点执行PLM数据抓取任务
-     */
-    //@Scheduled(cron = "0 0 1 * * ?")
 
     public void fetchPlmProjectDataDaily() {
         logger.info("开始执行PLM项目数据定时抓取任务");
@@ -182,7 +177,6 @@ public class PlmDataFetchService {
      */
     private List<PlmProject> parseProjectData(String projectData) {
         try {
-            // 根据实际返回的JSON结构进行解析
             JSONObject jsonObject = JSON.parseObject(projectData);
             JSONArray projectsArray = jsonObject.getJSONArray("projectInfo"); // 根据实际JSON结构调整
 

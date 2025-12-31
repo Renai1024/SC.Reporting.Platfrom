@@ -27,7 +27,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="qrCode != null  and qrCode != ''"> and qr_code like concat('%', #{qrCode}, '%')</if>
             <if test="screwIndex != null  and screwIndex != ''"> and screw_index like concat('%', #{screwIndex}, '%')</if>
-            <if test="lockTime != null "> and lock_time &gt;= #{lockTime} and lock_time &lt; DATE_ADD(#{lockTime}, interval 1 day)</if>
+<!--            <if test="lockTime != null "> and lock_time &gt;= #{lockTime} and lock_time &lt; DATE_ADD(#{lockTime}, interval 1 day)</if>-->
+            <if test="startTime != null"> and lock_time &gt;= #{startTime}</if>
+            <if test="endTime != null"> and lock_time &lt;= DATE_ADD(#{endTime}, interval 1 day)</if>
             <if test="targetTorque != null  and targetTorque != ''"> and target_torque = #{targetTorque}</if>
             <if test="actualTorque != null  and actualTorque != ''"> and actual_torque = #{actualTorque}</if>
             <if test="lockCircle != null  and lockCircle != ''"> and lock_circle like concat('%', #{lockCircle}, '%')</if>

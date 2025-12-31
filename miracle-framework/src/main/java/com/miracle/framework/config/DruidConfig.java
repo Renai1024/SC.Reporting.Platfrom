@@ -26,7 +26,7 @@ import jakarta.servlet.ServletResponse;
 
 /**
  * druid 配置多数据源
- * 
+ *
  * @author miracle
  */
 @Configuration
@@ -58,6 +58,33 @@ public class DruidConfig
         return druidProperties.dataSource(dataSource);
     }
 
+    @Bean
+    @ConfigurationProperties("spring.datasource.druid.slave3")
+    @ConditionalOnProperty(prefix = "spring.datasource.druid.slave3", name = "enabled", havingValue = "true")
+    public DataSource slave3DataSource(DruidProperties druidProperties)
+    {
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        return druidProperties.dataSource(dataSource);
+    }
+
+    @Bean
+    @ConfigurationProperties("spring.datasource.druid.slave4")
+    @ConditionalOnProperty(prefix = "spring.datasource.druid.slave4", name = "enabled", havingValue = "true")
+    public DataSource slave4DataSource(DruidProperties druidProperties)
+    {
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        return druidProperties.dataSource(dataSource);
+    }
+
+    @Bean
+    @ConfigurationProperties("spring.datasource.druid.slave5")
+    @ConditionalOnProperty(prefix = "spring.datasource.druid.slave5", name = "enabled", havingValue = "true")
+    public DataSource slave5DataSource(DruidProperties druidProperties)
+    {
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        return druidProperties.dataSource(dataSource);
+    }
+
     @Bean(name = "dynamicDataSource")
     @Primary
     public DynamicDataSource dataSource(DataSource masterDataSource)
@@ -66,12 +93,15 @@ public class DruidConfig
         targetDataSources.put(DataSourceType.MASTER.name(), masterDataSource);
         setDataSource(targetDataSources, DataSourceType.SLAVE.name(), "slaveDataSource");
         setDataSource(targetDataSources, DataSourceType.SLAVE2.name(), "slave2DataSource");
+        setDataSource(targetDataSources, DataSourceType.SLAVE3.name(), "slave3DataSource");
+        setDataSource(targetDataSources, DataSourceType.SLAVE4.name(), "slave4DataSource");
+        setDataSource(targetDataSources, DataSourceType.SLAVE5.name(), "slave5DataSource");
         return new DynamicDataSource(masterDataSource, targetDataSources);
     }
-    
+
     /**
      * 设置数据源
-     * 
+     *
      * @param targetDataSources 备选数据源集合
      * @param sourceName 数据源名称
      * @param beanName bean名称

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.MesBydlabelprintMapper">
+
+    <resultMap type="MesBydlabelprint" id="MesBydlabelprintResult">
+        <result property="materialCode"    column="materialCode"    />
+        <result property="materialVersion"    column="materialVersion"    />
+        <result property="customerCode"    column="customerCode"    />
+        <result property="dDFactoryFlag"    column="dDFactoryFlag"    />
+        <result property="barCodeStr"    column="barCodeStr"    />
+        <result property="labelNumber"    column="labelNumber"    />
+        <result property="manufactureDate"    column="manufactureDate"    />
+        <result property="labelPrintDateTime"    column="labelPrintDateTime"    />
+    </resultMap>
+
+    <sql id="selectMesBydlabelprintVo">
+        select materialCode, materialVersion, customerCode, dDFactoryFlag, barCodeStr, labelNumber, manufactureDate, labelPrintDateTime from dbo.vwBYDLabelPrint_Select
+    </sql>
+
+    <select id="selectMesBydlabelprintList" parameterType="MesBydlabelprint" resultMap="MesBydlabelprintResult">
+        <include refid="selectMesBydlabelprintVo"/>
+        <where>
+            <if test="materialCode != null  and materialCode != ''"> and materialCode = #{materialCode}</if>
+            <if test="materialVersion != null  and materialVersion != ''"> and materialVersion = #{materialVersion}</if>
+            <if test="customerCode != null  and customerCode != ''"> and customerCode = #{customerCode}</if>
+            <if test="dDFactoryFlag != null  and dDFactoryFlag != ''"> and dDFactoryFlag = #{dDFactoryFlag}</if>
+            <if test="barCodeStr != null  and barCodeStr != ''"> and barCodeStr like concat('%', #{barCodeStr}, '%')</if>
+            <if test="labelNumber != null "> and labelNumber = #{labelNumber}</if>
+            <if test="labelStartTime != null"> and manufactureDate &gt;= #{labelStartTime}</if>
+            <if test="labelEndTime != null"> and manufactureDate &lt;= DATEADD(day, 1, #{labelEndTime})</if>
+            <if test="printStartTime != null"> and labelPrintDateTime &gt;= #{printStartTime}</if>
+            <if test="printEndTime != null"> and labelPrintDateTime &lt;= DATEADD(day, 1, #{printEndTime})</if>
+        </where>
+        order by labelPrintDateTime desc
+    </select>
+
+    <select id="selectMesBydlabelprintByMaterialCode" parameterType="String" resultMap="MesBydlabelprintResult">
+        <include refid="selectMesBydlabelprintVo"/>
+        where materialCode = #{materialCode}
+    </select>
+
+</mapper>

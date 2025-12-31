@@ -1,9 +1,14 @@
 package com.miracle.extra.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.miracle.common.annotation.Anonymous;
 import com.miracle.common.exception.ServiceException;
+import com.miracle.extra.domain.dto.InspectionRecordDTO;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +31,7 @@ import com.miracle.common.core.page.TableDataInfo;
 
 /**
  * 检验数据Controller
- * 
+ *
  * @author miracle
  * @date 2025-09-24
  */
@@ -48,6 +53,83 @@ public class InspectionRecordMESController extends BaseController
         startPage();
         List<InspectionRecordMES> list = inspectionRecordMESService.selectInspectionRecordMESList(inspectionRecordMES);
         return getDataTable(list);
+    }
+
+    /**
+     * 查询已绑定箱码的检验数据列表
+     */
+    //@PreAuthorize("@ss.hasPermi('extra:mes_inspection_record:list')")
+//    @GetMapping("/listBoxCode")
+//    public TableDataInfo listBoxCode(InspectionRecordMES inspectionRecordMES)
+//    {
+//        startPage();
+//        List<InspectionRecordMES> list = inspectionRecordMESService.selectInspectionRecordMESListWithBoxCode(inspectionRecordMES);
+//        return getDataTable(list);
+//    }
+
+    @GetMapping("/listBoxCode")
+    public TableDataInfo listBoxCode(InspectionRecordMES inspectionRecordMES) {
+
+        List<InspectionRecordMES> list = inspectionRecordMESService.selectInspectionRecordMESListWithBoxCode(inspectionRecordMES);
+        //startPage();
+
+        // 日期格式化
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        // 按照 boxCode 分组并转换
+        Map<String, List<InspectionRecordMES>> groupedByBoxCode = list.stream()
+                .filter(record -> record.getBoxCode() != null)
+                .collect(Collectors.groupingBy(InspectionRecordMES::getBoxCode));
+
+        List<InspectionRecordDTO> resultList = groupedByBoxCode.entrySet().stream()
+                .map(entry -> {
+                    String boxCode = entry.getKey();
+                    List<InspectionRecordMES> records = entry.getValue();
+
+                    InspectionRecordDTO dto = new InspectionRecordDTO();
+                    dto.setBoxCode(boxCode);
+
+                    // 取第一个非空的 customerBoxCode
+                    records.stream()
+                            .map(InspectionRecordMES::getCustomerBoxCode)
+                            .filter(Objects::nonNull)
+                            .findFirst()
+                            .ifPresent(dto::setCustomerBoxCode);
+
+                    // 取第一个非空的 boxCodeBindTime 并格式化为字符串
+                    records.stream()
+                            .map(InspectionRecordMES::getBoxCodeBindTime)
+                            .filter(Objects::nonNull)
+                            .findFirst()
+                            .ifPresent(date -> dto.setBoxCodeBindTime(sdf.format(date)));
+
+                    // 取第一个非空的 customerBoxCodeBindTime 并格式化为字符串
+                    records.stream()
+                            .map(InspectionRecordMES::getCustomerBoxCodeBindTime)
+                            .filter(Objects::nonNull)
+                            .findFirst()
+                            .ifPresent(date -> dto.setCustomerBoxCodeBindTime(sdf.format(date)));
+
+                    // 收集所有的 serialNumber
+                    List<String> serialNumbers = records.stream()
+                            .map(InspectionRecordMES::getSerialNumber)
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
+                    dto.setSerialNumbers(serialNumbers);
+
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        startPage();
+
+        TableDataInfo tableDataInfo = new TableDataInfo();
+        tableDataInfo.setCode(200);
+        tableDataInfo.setMsg("操作成功");
+        tableDataInfo.setRows(resultList);
+        tableDataInfo.setTotal(resultList.size());
+
+        return tableDataInfo;
     }
 
     /**
@@ -146,12 +228,11 @@ public class InspectionRecordMESController extends BaseController
     /**
      * 删除检验数据
      */
-    @PreAuthorize("@ss.hasPermi('extra:mes_inspection_record:remove')")
+    //@PreAuthorize("@ss.hasPermi('extra:mes_inspection_record:remove')")
     @Log(title = "检验数据", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long ids)
     {
-        //return toAjax(inspectionRecordMESService.deleteInspectionRecordMESByIds(ids));
         return toAjax(inspectionRecordMESService.deleteInspectionRecordMESById(ids));
     }
 }

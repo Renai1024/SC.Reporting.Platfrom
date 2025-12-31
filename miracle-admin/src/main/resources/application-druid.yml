@@ -3,14 +3,15 @@ spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         druid:
-#            # 正式主库数据源
+            ##正式主库数据源
 #            master:
-#                url: jdbc:mysql://192.168.4.191:3306/miracle?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+#                url: jdbc:mysql://192.168.4.191:3306/miracle?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&sessionVariables=sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
 #                username: root
 #                password: sanco@mysql
 
 
             # 测试主库数据源
+            # mes测试服务器
             master:
                 url: jdbc:mysql://192.168.4.240:3306/miracle?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
                 username: root
@@ -25,24 +26,49 @@ spring:
                 username: bs_guest
                 password: bs_guest@123
 
-#            #从数据源2
-#            slave2:
-#                # 从数据源开关/默认关闭
-#                enabled: true
-#                url: jdbc:sqlserver://192.168.4.191:17933;databaseName=SCYCDATA;trustServerCertificate=true;encrypt=true;
-#                username: sa
-#                password: 1234!QAZ2wsx
-
             #从数据源2
             slave2:
                 # 从数据源开关/默认关闭
                 enabled: true
-                url: jdbc:sqlserver://192.168.4.69:1433;databaseName=SC;trustServerCertificate=true;encrypt=true;
+                url: jdbc:sqlserver://192.168.4.191:17933;databaseName=SCYCDATA;trustServerCertificate=true;encrypt=true;
                 username: sa
                 password: 1234!QAZ2wsx
 
+##            #从数据源2
+#            slave2:
+#                # 从数据源开关/默认关闭
+#                enabled: true
+#                url: jdbc:sqlserver://192.168.4.69:1433;databaseName=SC;trustServerCertificate=true;encrypt=true;
+#                username: sa
+#                password: 1234!QAZ2wsx
+
+            #从数据库3
+            #mes对接欣旺达
+            slave3:
+                # 从数据源开关/默认关闭
+                enabled: true
+                url: jdbc:mysql://192.168.4.121:3306/mom_qms?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                username: root
+                password: Sanco#Mes1=
+
+            #从数据库4
+            #纸飞机
+            slave4:
+                enabled: true
+                url: jdbc:sqlserver://192.168.4.226:1433;databaseName=SancoERP;trustServerCertificate=true;encrypt=true;
+                username: mes
+                password: Mes@2025
+
+            #从数据库5
+            #纸飞机2
+            slave5:
+                enabled: true
+                url: jdbc:sqlserver://192.168.4.226:1433;databaseName=DataSyncs;trustServerCertificate=true;encrypt=true;
+                username: mes
+                password: Mes@2025
+
             # 初始连接数
-            initialSize: 5
+            initialSize: 10
             # 最小连接池数量
             minIdle: 10
             # 最大连接池数量

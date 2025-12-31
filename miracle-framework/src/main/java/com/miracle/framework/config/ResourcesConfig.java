@@ -33,10 +33,15 @@ public class ResourcesConfig implements WebMvcConfigurer
         registry.addResourceHandler(Constants.RESOURCE_PREFIX + "/**")
                 .addResourceLocations("file:" + MiracleConfig.getProfile() + "/");
 
-        /** swagger配置 */
+        /** SpringDoc UI资源路径 - SpringDoc会自动处理，但为了确保生产环境正常，显式配置 */
         registry.addResourceHandler("/swagger-ui/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
-                .setCacheControl(CacheControl.maxAge(5, TimeUnit.HOURS).cachePublic());;
+                .addResourceLocations("classpath:/META-INF/resources/webjars/springdoc-openapi-ui/")
+                .setCacheControl(CacheControl.maxAge(5, TimeUnit.HOURS).cachePublic());
+        
+        /** SpringDoc API文档路径 */
+        registry.addResourceHandler("/v3/api-docs/**")
+                .addResourceLocations("classpath:/META-INF/resources/")
+                .setCacheControl(CacheControl.maxAge(5, TimeUnit.HOURS).cachePublic());
     }
 
     /**

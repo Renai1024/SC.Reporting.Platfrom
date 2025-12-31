@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.miracle.extra.mapper.InspectionRecordMESMapper">
-    
+
     <resultMap type="InspectionRecordMES" id="InspectionRecordMESResult">
         <result property="id"    column="id"    />
         <result property="serialNumber"    column="serial_number"    />
@@ -19,10 +19,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime3"    column="create_time3"    />
         <result property="boxCode"    column="box_code"    />
         <result property="customerBoxCode"    column="customer_box_code"    />
+        <result property="boxCodeBindTime"    column="box_code_bind_time"    />
+        <result property="customerBoxCodeBindTime"    column="customer_code_bind_time"    />
     </resultMap>
 
     <sql id="selectInspectionRecordMESVo">
         select *
+        from mes_inspection_record
+    </sql>
+
+    <sql id="selectInspectionRecordMESVoWithBoxCode">
+        select box_code, customer_box_code, box_code_bind_time, serial_number, customer_code_bind_time
         from mes_inspection_record
     </sql>
 
@@ -40,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectInspectionRecordMESList" parameterType="InspectionRecordMES" resultMap="InspectionRecordMESResult">
         <include refid="selectInspectionRecordMESVo"/>
-        <where>  
+        <where>
             <if test="serialNumber != null  and serialNumber != ''"> and serial_number like concat('%',#{serialNumber},'%')</if>
             <if test="createBy1 != null  and serialNumber != ''"> and create_by1 like concat('%',#{createBy1},'%')</if>
             <if test="createBy2 != null  and serialNumber != ''"> and create_by2 like concat('%',#{createBy2},'%')</if>
@@ -53,7 +60,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
         order by create_time1 desc , create_time2 desc , create_time3 desc
     </select>
-    
+
+    <select id="selectInspectionRecordMESListWithBoxCode" parameterType="InspectionRecordMES" resultMap="InspectionRecordMESResult">
+        <include refid="selectInspectionRecordMESVoWithBoxCode"/>
+
+        <where>
+            box_code is not null
+            and box_code &lt;&gt; ''
+            and box_code &lt;&gt; ' '
+            <if test="boxCode != null  and boxCode != ''"> and box_code like concat('%',#{boxCode},'%')</if>
+        </where>
+        group by box_code, customer_box_code, box_code_bind_time, serial_number
+        order by box_code_bind_time desc
+    </select>
+
+
     <select id="selectInspectionRecordMESById" parameterType="Long" resultMap="InspectionRecordMESResult">
         <include refid="selectInspectionRecordMESVo"/>
         where id = #{id}
@@ -91,7 +112,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectInspectionRecordMESByBoxCode" parameterType="String" resultMap="InspectionRecordMESResult">
         <include refid="selectInspectionRecordMESVo"/>
-        where box_code = #{boxCode}
+        <where>
+            <if test="boxCode != null  and boxCode != ''"> and box_code like concat('%',#{boxCode},'%')</if>
+        </where>
     </select>
 
     <select id="selectInspectionRecordMESByCustomerBoxCode" parameterType="String" resultMap="InspectionRecordMESResult">
@@ -200,6 +223,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime3 != null">create_time3 = #{createTime3},</if>
             <if test="boxCode != null">box_code = #{boxCode},</if>
             <if test="customerBoxCode != null">customer_box_code = #{customerBoxCode},</if>
+            <if test="boxCodeBindTime != null">box_code_bind_time = #{boxCodeBindTime},</if>
         </trim>
         where serial_number = #{serialNumber}
     </update>
@@ -208,6 +232,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update mes_inspection_record
         <trim prefix="SET" suffixOverrides=",">
             <if test="customerBoxCode != null">customer_box_code = #{customerBoxCode},</if>
+            <if test="customerBoxCodeBindTime != null">customer_code_bind_time = #{customerBoxCodeBindTime},</if>
         </trim>
         where box_code = #{boxCode}
     </update>
@@ -229,7 +254,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteInspectionRecordMESByIds" parameterType="String">
-        delete from mes_inspection_record where id in 
+        delete from mes_inspection_record where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

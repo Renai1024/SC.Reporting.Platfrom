@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.miracle.extra.mapper.PlmProjectMapper">
-    
+
     <resultMap type="PlmProject" id="PlmProjectResult">
         <result property="id"    column="id"    />
         <result property="projectNumber"    column="projectNumber"    />
@@ -14,16 +14,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="projectActualEndTime"    column="projectActualEndTime"  jdbcType="TIMESTAMP"  />
         <result property="projectState"    column="projectState"    />
         <result property="projectManager"    column="projectManager"    />
-        <result property="projectCompletedOnScheduleCount"    column="projectCompletedOnScheduleCount"    />
+        <result property="projectCompletedOnScheduleCount"    column="projectCompletedOnScheduleCount" />
+        <result property="projectMark"    column="projectMark"    />
     </resultMap>
 
     <sql id="selectPlmProjectVo">
-        select id, projectNumber, projectName, businessDivision, projectPlanStartTime, projectActualStartTime, projectActualEndTime, projectState, projectManager, projectCompletedOnScheduleCount from plm_project
+        select id, projectNumber,
+               projectName,
+               businessDivision,
+               projectPlanStartTime,
+               projectActualStartTime,
+               projectActualEndTime,
+               projectState,
+               projectManager,
+               projectCompletedOnScheduleCount,
+               projectMark
+               from plm_project
     </sql>
 
     <select id="selectPlmProjectList" parameterType="PlmProject" resultMap="PlmProjectResult">
         <include refid="selectPlmProjectVo"/>
-        <where>  
+        <where>
             <if test="projectNumber != null  and projectNumber != ''"> and projectNumber = #{projectNumber}</if>
             <if test="projectName != null  and projectName != ''"> and projectName like concat('%', #{projectName}, '%')</if>
             <if test="businessDivision != null  and businessDivision != ''"> and businessDivision = #{businessDivision}</if>
@@ -33,9 +44,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectState != null  and projectState != ''"> and projectState = #{projectState}</if>
             <if test="projectManager != null  and projectManager != ''"> and projectManager = #{projectManager}</if>
             <if test="projectCompletedOnScheduleCount != null  and projectCompletedOnScheduleCount != ''"> and projectCompletedOnScheduleCount = #{projectCompletedOnScheduleCount}</if>
+             <if test="projectMark != null  and projectMark != ''"> and projectMark = #{projectMark}</if>
         </where>
     </select>
-    
+
     <select id="selectPlmProjectById" parameterType="Long" resultMap="PlmProjectResult">
         <include refid="selectPlmProjectVo"/>
         where id = #{id}
@@ -53,6 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectState != null">projectState,</if>
             <if test="projectManager != null">projectManager,</if>
             <if test="projectCompletedOnScheduleCount != null">projectCompletedOnScheduleCount,</if>
+            <if test="projectMark != null">projectMark,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="projectNumber != null">#{projectNumber},</if>
@@ -64,6 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectState != null">#{projectState},</if>
             <if test="projectManager != null">#{projectManager},</if>
             <if test="projectCompletedOnScheduleCount != null">#{projectCompletedOnScheduleCount},</if>
+            <if test="projectMark != null">#{projectMark},</if>
          </trim>
     </insert>
 
@@ -79,7 +93,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          projectActualEndTime,
          projectState,
          projectManager,
-         projectCompletedOnScheduleCount)
+         projectCompletedOnScheduleCount,
+         projectMark)
         values
         <foreach collection="plmProjectList" item="item" separator=",">
             (#{item.projectNumber},
@@ -90,7 +105,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{item.projectActualEndTime,jdbcType=TIMESTAMP},
             #{item.projectState},
             #{item.projectManager},
-            #{item.projectCompletedOnScheduleCount})
+            #{item.projectCompletedOnScheduleCount},
+            #{item.projectMark})
         </foreach>
     </insert>
 
@@ -107,6 +123,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectState != null">projectState = #{projectState},</if>
             <if test="projectManager != null">projectManager = #{projectManager},</if>
             <if test="projectCompletedOnScheduleCount != null">projectCompletedOnScheduleCount = #{projectCompletedOnScheduleCount},</if>
+            <if test="projectMark != null">projectMark = #{projectMark},</if>
         </trim>
         where id = #{id}
     </update>
@@ -116,7 +133,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deletePlmProjectByIds" parameterType="String">
-        delete from plm_project where id in 
+        delete from plm_project where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

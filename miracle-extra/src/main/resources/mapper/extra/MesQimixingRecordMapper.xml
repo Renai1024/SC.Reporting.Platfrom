@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.MesQimixingRecordMapper">
+
+    <resultMap type="MesQimixingRecord" id="MesQimixingRecordResult">
+        <result property="datatime"    column="datatime"    />
+        <result property="workresult"    column="workresult"    />
+        <result property="tongdao"    column="tongdao"    />
+        <result property="tiaoma"    column="tiaoma"    />
+        <result property="pinghengshangxian"    column="pinghengshangxian"    />
+        <result property="pinghengxiaxian"    column="pinghengxiaxian"    />
+        <result property="celiangshangxian"    column="celiangshangxian"    />
+        <result property="celiangxiaxian"    column="celiangxiaxian"    />
+        <result property="xieluozhi"    column="xieluozhi"    />
+        <result property="yalizhi"    column="yalizhi"    />
+        <result property="danwei"    column="danwei"    />
+        <result property="yanchitime"    column="yanchitime"    />
+        <result property="chongqitime"    column="chongqitime"    />
+        <result property="pinghengtime"    column="pinghengtime"    />
+        <result property="celiangtime"    column="celiangtime"    />
+        <result property="paiqitime"    column="paiqitime"    />
+    </resultMap>
+
+    <sql id="selectMesQimixingRecordVo">
+        select datatime,
+               workresult,
+               tongdao,
+               tiaoma,
+               pinghengshangxian,
+               pinghengxiaxian,
+               celiangshangxian,
+               celiangxiaxian,
+               xieluozhi,
+               yalizhi,
+               danwei,
+               yanchitime,
+               chongqitime,
+               pinghengtime,
+               celiangtime,
+               paiqitime
+        from dbo.QiMiXing
+    </sql>
+
+    <select id="selectMesQimixingRecordList" parameterType="MesQimixingRecord" resultMap="MesQimixingRecordResult">
+        <include refid="selectMesQimixingRecordVo"/>
+        <where>
+            <if test="startTime != null "> and datatime &gt;= #{startTime}</if>
+            <if test="endTime != null "> and datatime &lt;= DATEADD(day, 1, #{endTime})</if>
+            <if test="workresult != null  and workresult != ''"> and workresult = #{workresult}</if>
+            <if test="tongdao != null  and tongdao != ''"> and tongdao = #{tongdao}</if>
+            <if test="tiaoma != null  and tiaoma != ''"> and tiaoma = #{tiaoma}</if>
+            <if test="pinghengshangxian != null  and pinghengshangxian != ''"> and pinghengshangxian = #{pinghengshangxian}</if>
+            <if test="pinghengxiaxian != null  and pinghengxiaxian != ''"> and pinghengxiaxian = #{pinghengxiaxian}</if>
+            <if test="celiangshangxian != null  and celiangshangxian != ''"> and celiangshangxian = #{celiangshangxian}</if>
+            <if test="celiangxiaxian != null  and celiangxiaxian != ''"> and celiangxiaxian = #{celiangxiaxian}</if>
+            <if test="xieluozhi != null  and xieluozhi != ''"> and xieluozhi = #{xieluozhi}</if>
+            <if test="yalizhi != null  and yalizhi != ''"> and yalizhi = #{yalizhi}</if>
+            <if test="danwei != null  and danwei != ''"> and danwei = #{danwei}</if>
+            <if test="yanchitime != null "> and yanchitime = #{yanchitime}</if>
+            <if test="chongqitime != null "> and chongqitime = #{chongqitime}</if>
+            <if test="pinghengtime != null "> and pinghengtime = #{pinghengtime}</if>
+            <if test="celiangtime != null "> and celiangtime = #{celiangtime}</if>
+            <if test="paiqitime != null "> and paiqitime = #{paiqitime}</if>
+        </where>
+        ORDER BY datatime DESC
+    </select>
+
+    <select id="selectMesQimixingRecordById" parameterType="Long" resultMap="MesQimixingRecordResult">
+        <include refid="selectMesQimixingRecordVo"/>
+        where id = #{id}
+    </select>
+
+
+</mapper>

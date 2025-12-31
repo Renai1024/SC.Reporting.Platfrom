@@ -31,9 +31,17 @@ public class ProdScrewTorque extends BaseEntity
     private String screwIndex;
 
     /** 锁附时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    @Excel(name = "锁附时间", width = 30, dateFormat = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "锁附时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date lockTime;
+
+    /**开始时间**/
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date startTime;
+
+    /** 结束时间**/
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date endTime;
 
     /** 目标扭矩 */
     @Excel(name = "目标扭矩")

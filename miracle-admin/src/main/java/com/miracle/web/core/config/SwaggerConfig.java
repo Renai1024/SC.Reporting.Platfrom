@@ -40,10 +40,11 @@ public class SwaggerConfig
     public SecurityScheme securityScheme()
     {
         return new SecurityScheme()
-            .type(SecurityScheme.Type.APIKEY)
+            .type(SecurityScheme.Type.HTTP)
             .name("Authorization")
             .in(SecurityScheme.In.HEADER)
-            .scheme("Bearer");
+            .scheme("Bearer")
+            .bearerFormat("JWT");
     }
     
     /**

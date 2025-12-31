@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * 检验数据对象 mes_inspection_record
- * 
+ *
  * @author miracle
  * @date 2025-09-24
  */
@@ -74,6 +74,14 @@ public class InspectionRecordMES extends BaseEntity
     /** 客户箱码 */
     @Excel(name = "客户箱码")
     private String customerBoxCode;
+
+    /** 箱码绑定时间 */
+    @Excel(name = "箱码绑定时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private Date boxCodeBindTime;
+
+    /** 客户箱码绑定时间 */
+    @Excel(name = "客户箱码绑定时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private Date customerBoxCodeBindTime;
 
     @Data
     /** 箱码绑定请求 */

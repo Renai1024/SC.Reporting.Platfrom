@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 物料信息Mapper接口
- * 
+ *
  * @author miracle
  * @date 2025-07-27
  */
 @DataSource(DataSourceType.SLAVE)
 @Mapper
-public interface MaterialInfoMapper 
+public interface MaterialInfoMapper
 {
     /**
      * 查询物料信息
-     * 
+     *
      * @param materialId 物料信息主键
      * @return 物料信息
      */
@@ -29,11 +29,18 @@ public interface MaterialInfoMapper
 
     /**
      * 查询物料信息列表
-     * 
+     *
      * @param materialInfo 物料信息
      * @return 物料信息集合
      */
     public List<MaterialInfo> selectMaterialInfoList(MaterialInfo materialInfo);
+
+    /**
+     * 根据物料编码查询物料信息列表
+     * @param materialCode 物料编码
+     * @return 物料信息集合
+     */
+    public int selectMaterialInfoListByMaterialCodeCount(String materialCode);
 
     /**
      * 查询物料信息列表

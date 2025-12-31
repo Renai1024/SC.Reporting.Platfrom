@@ -15,19 +15,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 检验数据Service业务层处理
- * 
+ *
  * @author miracle
  * @date 2025-09-24
  */
 @Service
-public class InspectionRecordMESServiceImpl implements IInspectionRecordMESService 
+public class InspectionRecordMESServiceImpl implements IInspectionRecordMESService
 {
     @Autowired
     private InspectionRecordMESMapper inspectionRecordMESMapper;
 
     /**
      * 查询检验数据
-     * 
+     *
      * @param id 检验数据主键
      * @return 检验数据
      */
@@ -44,7 +44,7 @@ public class InspectionRecordMESServiceImpl implements IInspectionRecordMESServi
 
     /**
      * 查询检验数据列表
-     * 
+     *
      * @param inspectionRecordMES 检验数据
      * @return 检验数据
      */
@@ -52,6 +52,16 @@ public class InspectionRecordMESServiceImpl implements IInspectionRecordMESServi
     public List<InspectionRecordMES> selectInspectionRecordMESList(InspectionRecordMES inspectionRecordMES)
     {
         return inspectionRecordMESMapper.selectInspectionRecordMESList(inspectionRecordMES);
+    }
+
+    /**
+     * 查询箱码绑定数据by箱码
+     * @param inspectionRecordMES 检验数据
+     * @return
+     */
+    @Override
+    public List<InspectionRecordMES> selectInspectionRecordMESListWithBoxCode(InspectionRecordMES inspectionRecordMES) {
+        return inspectionRecordMESMapper.selectInspectionRecordMESListWithBoxCode(inspectionRecordMES);
     }
 
     /**
@@ -153,7 +163,7 @@ public class InspectionRecordMESServiceImpl implements IInspectionRecordMESServi
 
     /**
      * 修改检验数据
-     * 
+     *
      * @param inspectionRecordMES 检验数据
      * @return 结果
      */
@@ -173,6 +183,7 @@ public class InspectionRecordMESServiceImpl implements IInspectionRecordMESServi
     @Transactional
     @Override
     public int updateInspectionRecordMES(String[] serialNumbers, String boxCode) {
+        Date now = DateUtils.getNowDate();
         int hasBoxCode = inspectionRecordMESMapper.selectInspectionRecordMESByBoxCodeCount(boxCode);
         int successCount = 0;
         Map<String,String> updateErrors = new HashMap<>();
@@ -212,6 +223,7 @@ public class InspectionRecordMESServiceImpl implements IInspectionRecordMESServi
                 InspectionRecordMES params = new InspectionRecordMES();
                 params.setSerialNumber(serialNumber);
                 params.setBoxCode(boxCode);
+                params.setBoxCodeBindTime(now);
                 int resultCount = inspectionRecordMESMapper.updateInspectionRecordMES(params);
                 if(resultCount <= 0){
                     updateErrors.put(serialNumber, "序列号：" + serialNumber + "绑定箱码失败！");
@@ -235,7 +247,7 @@ public class InspectionRecordMESServiceImpl implements IInspectionRecordMESServi
     }
 
     /**
-     * 箱码绑定
+     * 客户箱码绑定
      * @param boxCode 箱码
      * @param customerBoxCode 客户箱码
      * @return 影响行数
@@ -246,6 +258,7 @@ public class InspectionRecordMESServiceImpl implements IInspectionRecordMESServi
         List<InspectionRecordMES> customerBoxCodeResultList = inspectionRecordMESMapper.selectInspectionRecordMESByCustomerBoxCode(customerBoxCode);
         List<String> boxCodes = new ArrayList<>();
         List<String> customerBoxCodes = new ArrayList<>();
+        Date now = DateUtils.getNowDate();
         if(boxCodeResultList.isEmpty()){
             throw new ServiceException("箱码：" + boxCode + "不存在，请仔细检查！");
         }else if(!customerBoxCodeResultList.isEmpty()){
@@ -266,12 +279,12 @@ public class InspectionRecordMESServiceImpl implements IInspectionRecordMESServi
                 throw new ServiceException("箱码：" + boxCode + "已绑定客户箱码：" + customerBoxCodes + "，不允许重复绑定！");
             }
         }
-        return inspectionRecordMESMapper.updateInspectionRecordMESCustomerBoxCode(boxCode, customerBoxCode);
+        return inspectionRecordMESMapper.updateInspectionRecordMESCustomerBoxCode(boxCode, customerBoxCode,now);
     }
 
     /**
      * 批量删除检验数据
-     * 
+     *
      * @param ids 需要删除的检验数据主键
      * @return 结果
      */
@@ -283,7 +296,7 @@ public class InspectionRecordMESServiceImpl implements IInspectionRecordMESServi
 
     /**
      * 删除检验数据信息
-     * 
+     *
      * @param id 检验数据主键
      * @return 结果
      */

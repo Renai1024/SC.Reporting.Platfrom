@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.MesBydlabelscanMapper">
+
+    <resultMap type="MesBydlabelscan" id="MesBydlabelscanResult">
+        <result property="materialCode"    column="materialCode"    />
+        <result property="barCodeStr"    column="barCodeStr"    />
+        <result property="scanDate"    column="scanDate"    />
+        <result property="scanMachine"    column="scanMachine"    />
+        <result property="scanIPAddress"    column="scanIPAddress"    />
+        <result property="duplicateFlag"    column="duplicateFlag"    />
+    </resultMap>
+
+    <sql id="selectMesBydlabelscanVo">
+        select materialCode, barCodeStr, scanDate, scanMachine, scanIPAddress, duplicateFlag from dbo.vwBYDLabelScan_Select
+    </sql>
+
+    <select id="selectMesBydlabelscanList" parameterType="MesBydlabelscan" resultMap="MesBydlabelscanResult">
+        <include refid="selectMesBydlabelscanVo"/>
+        <where>
+            <if test="materialCode != null  and materialCode != ''"> and materialCode = #{materialCode}</if>
+            <if test="barCodeStr != null  and barCodeStr != ''"> and barCodeStr like concat('%', #{barCodeStr}, '%')</if>
+            <if test="startTime != null"> and scanDate &gt;= #{startTime}</if>
+            <if test="endTime != null"> and scanDate &lt;= DATEADD(day, 1, #{endTime})</if>
+            <if test="scanMachine != null  and scanMachine != ''"> and scanMachine = #{scanMachine}</if>
+            <if test="scanIPAddress != null  and scanIPAddress != ''"> and scanIPAddress = #{scanIPAddress}</if>
+            <if test="duplicateFlag != null  and duplicateFlag != ''"> and duplicateFlag = #{duplicateFlag}</if>
+        </where>
+        order by scanDate desc
+    </select>
+
+    <select id="selectMesBydlabelscanByMaterialCode" parameterType="String" resultMap="MesBydlabelscanResult">
+        <include refid="selectMesBydlabelscanVo"/>
+        where materialCode = #{materialCode}
+    </select>
+
+</mapper>

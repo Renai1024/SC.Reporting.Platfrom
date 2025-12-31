@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.BizWeldingRecordMapper">
+
+    <resultMap type="BizWeldingRecord" id="BizWeldingRecordResult">
+        <result property="id"    column="id"    />
+        <result property="productCode"    column="product_code"    />
+        <result property="weldingTime"    column="welding_time"    />
+        <result property="weldingResult"    column="welding_result"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBizWeldingRecordVo">
+        select id, product_code, welding_time, welding_result, create_by, create_time from biz_welding_record
+    </sql>
+
+    <select id="selectBizWeldingRecordList" parameterType="BizWeldingRecord" resultMap="BizWeldingRecordResult">
+        <include refid="selectBizWeldingRecordVo"/>
+        <where>
+            <if test="productCode != null  and productCode != ''"> and product_code like concat('%', #{productCode}, '%')</if>
+            <if test="weldingTime != null "> and welding_time &lt;= DATE_ADD(#{weldingTime}, interval 1 day)</if>
+            <if test="weldingResult != null  and weldingResult != ''"> and welding_result like concat('%', #{weldingResult}, '%')</if>
+        </where>
+        ORDER BY welding_time DESC
+    </select>
+
+    <select id="selectBizWeldingRecordById" parameterType="Long" resultMap="BizWeldingRecordResult">
+        <include refid="selectBizWeldingRecordVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBizWeldingRecord" parameterType="BizWeldingRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_welding_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productCode != null and productCode != ''">product_code,</if>
+            <if test="weldingTime != null">welding_time,</if>
+            <if test="weldingResult != null and weldingResult != ''">welding_result,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productCode != null and productCode != ''">#{productCode},</if>
+            <if test="weldingTime != null">#{weldingTime},</if>
+            <if test="weldingResult != null and weldingResult != ''">#{weldingResult},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <insert id="insertBizWeldingRecordBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO biz_welding_record
+        (product_code,
+         welding_time,
+         welding_result,
+         create_by,
+         create_time)
+        values
+        <foreach collection="bizWeldingRecordList" item="item" separator=",">
+            (#{item.productCode},
+             #{item.weldingTime},
+             #{item.weldingResult},
+             #{item.createBy},
+             #{item.createTime})
+        </foreach>
+    </insert>
+
+    <update id="updateBizWeldingRecord" parameterType="BizWeldingRecord">
+        update biz_welding_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productCode != null and productCode != ''">product_code = #{productCode},</if>
+            <if test="weldingTime != null">welding_time = #{weldingTime},</if>
+            <if test="weldingResult != null and weldingResult != ''">welding_result = #{weldingResult},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizWeldingRecordById" parameterType="Long">
+        delete from biz_welding_record where id = #{id}
+    </delete>
+
+    <delete id="deleteBizWeldingRecordByIds" parameterType="String">
+        delete from biz_welding_record where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

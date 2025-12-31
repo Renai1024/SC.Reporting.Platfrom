@@ -2,8 +2,8 @@ package com.miracle.extra.controller;
 
 import java.util.List;
 
-import com.miracle.extra.domain.ProductReportMes;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,7 @@ import com.miracle.common.core.page.TableDataInfo;
  * @author miracle
  * @date 2025-09-10
  */
+@Tag(name = "PLM项目管理")
 @RestController
 @RequestMapping("/extra/plm/report/plm_project")
 public class PlmProjectController extends BaseController
@@ -40,6 +41,7 @@ public class PlmProjectController extends BaseController
     /**
      * 查询PLM项目列表
      */
+    @Operation(summary = "查询PLM项目列表")
     @PreAuthorize("@ss.hasPermi('extra:plm_project:list')")
     @GetMapping("/list")
     public TableDataInfo list(PlmProject plmProject)
@@ -52,6 +54,7 @@ public class PlmProjectController extends BaseController
     /**
      * 导出PLM项目列表
      */
+    @Operation(summary = "导出PLM项目列表")
     @PreAuthorize("@ss.hasPermi('extra:plm_project:export')")
     @Log(title = "PLM项目", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
@@ -65,6 +68,7 @@ public class PlmProjectController extends BaseController
     /**
      * 获取PLM项目详细信息
      */
+    @Operation(summary = "获取PLM项目详细信息")
     @PreAuthorize("@ss.hasPermi('extra:plm_project:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
@@ -75,6 +79,7 @@ public class PlmProjectController extends BaseController
     /**
      * 新增PLM项目
      */
+    @Operation(summary = "新增PLM项目")
     @PreAuthorize("@ss.hasPermi('extra:plm_project:add')")
     @Log(title = "新增PLM项目", businessType = BusinessType.INSERT)
     @PostMapping("/add")
@@ -86,7 +91,7 @@ public class PlmProjectController extends BaseController
     /**
      * 批量新增PLM项目
      */
-
+    @Operation(summary = "批量新增PLM项目")
     @PreAuthorize("@ss.hasPermi('extra:plm_project:add')")
     @Log(title = "批量新增PLM项目数据", businessType = BusinessType.INSERT)
     @PostMapping("/addBatch")
@@ -98,6 +103,7 @@ public class PlmProjectController extends BaseController
     /**
      * 修改PLM项目
      */
+    @Operation(summary = "修改PLM项目")
     @PreAuthorize("@ss.hasPermi('extra:plm_project:edit')")
     @Log(title = "PLM项目", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -109,6 +115,7 @@ public class PlmProjectController extends BaseController
     /**
      * 删除PLM项目
      */
+    @Operation(summary = "删除PLM项目")
     @PreAuthorize("@ss.hasPermi('extra:plm_project:remove')")
     @Log(title = "PLM项目", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
