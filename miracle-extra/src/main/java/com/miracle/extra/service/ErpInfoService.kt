@@ -1,26 +1,25 @@
 package com.miracle.extra.service;
 
-import com.miracle.extra.domain.ErpInfo;
+import com.miracle.extra.domain.ErpInfo
 
-import java.util.List;
 
-public interface ErpInfoService {
+interface ErpInfoService {
 
-    public List<ErpInfo> selectWorkerList(ErpInfo erpInfo);
+    fun selectWorkerList(erpInfo: ErpInfo): List<ErpInfo>;
 
-    public List<ErpInfo> selectWorkshopList(ErpInfo erpInfo);
+    fun selectWorkshopList(erpInfo: ErpInfo): List<ErpInfo>;
 
-    public List<ErpInfo> selectWorkshopByCode(String workshopCode);
+    fun selectWorkshopByCode(workshopCode: String?): List<ErpInfo>;
 
-    public List<ErpInfo> selectWorkshopByName(String workshopName);
+    fun selectWorkshopByName(workshopName: String?): List<ErpInfo>;
 
-    public List<ErpInfo> selectWorkerByCode(String workerCode);
+    fun selectWorkerByCode(workerCode: String?): List<ErpInfo>;
 
-    public List<ErpInfo> selectWorkerByName(String workerName);
+    fun selectWorkerByName(workerName: String?): List<ErpInfo>;
 
-    public List<ErpInfo> searchWorkshop(String searchText);
+    fun searchWorkshop(searchText: String?): List<ErpInfo>;
 
-    public List<ErpInfo> searchWorker(String searchText);
+    fun searchWorker(searchText: String?): List<ErpInfo>;
 
-    public List<ErpInfo> searchMaterial(String searchText);
+    fun searchMaterial(searchText: String?): List<ErpInfo>;
 }

@@ -2,49 +2,48 @@ package com.miracle.extra.mapper;
 
 import com.miracle.common.annotation.DataSource;
 import com.miracle.common.enums.DataSourceType;
-import com.miracle.extra.domain.ErpInfo;
+import com.miracle.extra.domain.ErpInfo
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
 
 @Mapper
 @DataSource(DataSourceType.SLAVE)
-public interface ErpInfoMapper {
+interface ErpInfoMapper {
 
 
     /**
      * 查询所有员工列表
      * @return
      */
-    public List<ErpInfo> selectWorkerList(ErpInfo erpInfo);
+    fun selectWorkerList(erpInfo : ErpInfo) : List<ErpInfo>
 
     /**
      * 查询所有车间列表
      * @return
      */
-    public List<ErpInfo> selectWorkshopList(ErpInfo erpInfo);
+    fun selectWorkshopList(erpInfo: ErpInfo) : List<ErpInfo>
 
     /**
      * 搜索车间列表
      * @param searchText 搜索关键字
      * @return
      */
-    public List<ErpInfo> searchWorkshop(@Param("searchText") String searchText);
+    fun searchWorkshop(@Param("searchText") searchText : String?): List<ErpInfo>
 
     /**
      * 搜索员工列表
      * @param searchText 搜索关键字
      * @return
      */
-    public List<ErpInfo> searchWorker(@Param("searchText") String searchText);
+    fun searchWorker(@Param("searchText") searchText : String?): List<ErpInfo>;
 
     /**
      * 搜索物料列表
      * @param searchText 搜索关键字
      * @return
      */
-    public List<ErpInfo> searchMaterial(@Param("searchText") String searchText);
+    fun searchMaterial(@Param("searchText") searchText: String?) : List<ErpInfo>;
 
 
     /**
@@ -53,7 +52,7 @@ public interface ErpInfoMapper {
      * @param workshopCode 车间编码
      * @return 转序明细集合
      */
-    public List<ErpInfo> selectWorkshopByCode(String workshopCode);
+    fun selectWorkshopByCode(workshopCode: String?) : List<ErpInfo>;
 
     /**
      * 根据车间名称查询转序明细列表
@@ -61,7 +60,7 @@ public interface ErpInfoMapper {
      * @param workshopName 车间名称
      * @return 转序明细集合
      */
-    public List<ErpInfo> selectWorkshopByName(String workshopName);
+    fun selectWorkshopByName(workshopName : String?): List<ErpInfo>;
 
     /**
      * 根据员工编码查询转序明细列表
@@ -69,7 +68,7 @@ public interface ErpInfoMapper {
      * @param workerCode 员工编码
      * @return 转序明细集合
      */
-    public List<ErpInfo> selectWorkerByCode(String workerCode);
+    fun selectWorkerByCode(workerCode: String?): List<ErpInfo>;
 
     /**
      * 根据员工名称查询转序明细列表
@@ -77,7 +76,7 @@ public interface ErpInfoMapper {
      * @param workerName 员工名称
      * @return 转序明细集合
      */
-    public List<ErpInfo> selectWorkerByName(String workerName);
+    fun selectWorkerByName(workerName: String?): List<ErpInfo>;
 
     /**
      * 根据物料编码查询转序明细列表
@@ -85,7 +84,7 @@ public interface ErpInfoMapper {
      * @param materialCode 物料编码
      * @return 转序明细集合
      */
-    public List<ErpInfo> selectMaterialByCode(String materialCode);
+    fun selectMaterialByCode(materialCode: String?): List<ErpInfo>;
 
     /**
      * 根据物料名称查询转序明细列表
@@ -93,5 +92,5 @@ public interface ErpInfoMapper {
      * @param materialName 物料名称
      * @return 转序明细集合
      */
-    public List<ErpInfo> selectMaterialByName(String materialName);
+    fun selectMaterialByName(materialName: String?): List<ErpInfo>;
 }

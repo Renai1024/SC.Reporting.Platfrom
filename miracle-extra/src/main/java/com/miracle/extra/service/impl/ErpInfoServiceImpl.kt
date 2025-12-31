@@ -1,60 +1,28 @@
 package com.miracle.extra.service.impl;
-
-import com.miracle.extra.domain.ErpInfo;
+import com.miracle.extra.domain.ErpInfo
 import com.miracle.extra.mapper.ErpInfoMapper;
-import com.miracle.extra.service.ErpInfoService;
-import jakarta.annotation.Resource;
+import com.miracle.extra.service.ErpInfoService
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class ErpInfoServiceImpl implements ErpInfoService {
-    @Resource
-    ErpInfoMapper erpInfoMapper;
+class ErpInfoServiceImpl(private val erpInfoMapper: ErpInfoMapper) : ErpInfoService {
 
-    @Override
-    public List<ErpInfo> selectWorkerList(ErpInfo erpInfo) {
-        return erpInfoMapper.selectWorkerList(erpInfo);
-    }
 
-    @Override
-    public List<ErpInfo> selectWorkshopList(ErpInfo erpInfo) {
-        return erpInfoMapper.selectWorkshopList(erpInfo);
-    }
+    override fun selectWorkerList(erpInfo: ErpInfo) : List<ErpInfo> = erpInfoMapper.selectWorkerList(erpInfo)
 
-    @Override
-    public List<ErpInfo> selectWorkshopByCode(String workshopCode) {
-        return erpInfoMapper.selectWorkshopByCode(workshopCode);
-    }
+    override fun selectWorkshopList(erpInfo : ErpInfo) : List<ErpInfo> = erpInfoMapper.selectWorkshopList(erpInfo)
 
-    @Override
-    public List<ErpInfo> selectWorkshopByName(String workshopName) {
-        return erpInfoMapper.selectWorkshopByName(workshopName);
-    }
+    override fun selectWorkshopByCode(workshopCode: String?) : List<ErpInfo> = erpInfoMapper.selectWorkshopByCode(workshopCode)
 
-    @Override
-    public List<ErpInfo> selectWorkerByCode(String workerCode) {
-        return erpInfoMapper.selectWorkerByCode(workerCode);
-    }
+    override fun selectWorkshopByName(workshopName : String?): List<ErpInfo> = erpInfoMapper.selectWorkshopByName(workshopName)
 
-    @Override
-    public List<ErpInfo> selectWorkerByName(String workerName) {
-        return erpInfoMapper.selectWorkerByName(workerName);
-    }
+    override fun selectWorkerByCode(workerCode: String?) : List<ErpInfo> = erpInfoMapper.selectWorkerByCode(workerCode)
 
-    @Override
-    public List<ErpInfo> searchWorkshop(String searchText) {
-        return erpInfoMapper.searchWorkshop(searchText);
-    }
+    override fun selectWorkerByName(workerName: String?) : List<ErpInfo> = erpInfoMapper.selectWorkerByName(workerName)
 
-    @Override
-    public List<ErpInfo> searchWorker(String searchText) {
-        return erpInfoMapper.searchWorker(searchText);
-    }
+    override fun searchWorkshop(searchText: String?) : List<ErpInfo> = erpInfoMapper.searchWorkshop(searchText)
 
-    @Override
-    public List<ErpInfo> searchMaterial(String searchText) {
-        return erpInfoMapper.searchMaterial(searchText);
-    }
+    override fun searchWorker(searchText: String?) : List<ErpInfo> = erpInfoMapper.searchWorker(searchText)
+
+    override fun searchMaterial(searchText: String?) : List<ErpInfo> = erpInfoMapper.searchMaterial(searchText)
 }

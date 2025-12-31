@@ -1,14 +1,12 @@
 package com.miracle.extra.domain;
 
-import com.miracle.common.core.domain.BaseEntity;
-import lombok.Data;
+import com.miracle.common.core.domain.BaseEntity
 
-@Data
-public class ErpInfo extends BaseEntity {
-    private String workerName;
-    private String workerCode;
-    private String workshopName;
-    private String workshopCode;
-    private String materialName;
-    private String materialCode;
-}
+data class ErpInfo (
+    var workerName: String? = null,
+    var workerCode: String? = null,
+    var workshopName: String? = null,
+    var workshopCode: String? = null,
+    var materialName: String? = null,
+    var materialCode: String? = null,
+) : BaseEntity()
