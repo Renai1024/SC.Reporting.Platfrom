@@ -47,7 +47,6 @@ public class SunwodaToolingMoldImportService {
         System.out.println("appId: " + appId);
         // 3. 准备数据
         List<SunwodaToolingMoldImport> requestBody = prepareData();
-        System.out.println("requestBody: " + requestBody);
 
         // 4. 设置认证请求头
         HttpHeaders headers = new HttpHeaders();
@@ -85,7 +84,6 @@ public class SunwodaToolingMoldImportService {
             item.setVendorCode(vendorCode);
             item.setDataUploadTime(now);
         }
-        System.out.println("result : " + result);
 
         return result;
     }

@@ -57,7 +57,6 @@ class IBizWeldingRecordServiceImpl(
      * @return 结果
      */
 
-    @Override
     override fun insertBizWeldingRecordBatch(bizWeldingRecord : List<BizWeldingRecord>) : Int {
         val createBy : String = SecurityUtils.getLoginUser().user.nickName
         val now : Date= DateUtils.getNowDate();
@@ -83,7 +82,6 @@ class IBizWeldingRecordServiceImpl(
      * @param bizWeldingRecord 焊接结果记录
      * @return 结果
      */
-    @Override
     override fun updateBizWeldingRecord(bizWeldingRecord : BizWeldingRecord) : Int = bizWeldingRecordMapper.updateBizWeldingRecord(bizWeldingRecord);
 
     /**
@@ -92,7 +90,6 @@ class IBizWeldingRecordServiceImpl(
      * @param ids 需要删除的焊接结果记录主键
      * @return 结果
      */
-    @Override
     override fun deleteBizWeldingRecordByIds(ids : Array<Long>) : Int = bizWeldingRecordMapper.deleteBizWeldingRecordByIds(ids)
 
 
@@ -102,7 +99,6 @@ class IBizWeldingRecordServiceImpl(
      * @param id 焊接结果记录主键
      * @return 结果
      */
-    @Override
     override fun deleteBizWeldingRecordById(id : Long) : Int = bizWeldingRecordMapper.deleteBizWeldingRecordById(id);
 
     /**

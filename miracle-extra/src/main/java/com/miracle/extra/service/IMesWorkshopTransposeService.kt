@@ -1,6 +1,5 @@
 package com.miracle.extra.service;
 
-import java.util.List;
 import com.miracle.extra.domain.MesWorkshopTranspose;
 
 /**
@@ -9,7 +8,7 @@ import com.miracle.extra.domain.MesWorkshopTranspose;
  * @author miracle
  * @date 2025-12-17
  */
-public interface IMesWorkshopTransposeService
+interface IMesWorkshopTransposeService
 {
     /**
      * 查询车间转序
@@ -17,7 +16,7 @@ public interface IMesWorkshopTransposeService
      * @param id 车间转序主键
      * @return 车间转序
      */
-    public MesWorkshopTranspose selectMesWorkshopTransposeById(Long id);
+    fun selectMesWorkshopTransposeById(id: Long): MesWorkshopTranspose
 
     /**
      * 查询车间转序列表
@@ -25,7 +24,7 @@ public interface IMesWorkshopTransposeService
      * @param mesWorkshopTranspose 车间转序
      * @return 车间转序集合
      */
-    public List<MesWorkshopTranspose> selectMesWorkshopTransposeList(MesWorkshopTranspose mesWorkshopTranspose);
+    fun selectMesWorkshopTransposeList(mesWorkshopTranspose: MesWorkshopTranspose):List<MesWorkshopTranspose>
 
     /**
      * 新增车间转序
@@ -33,7 +32,7 @@ public interface IMesWorkshopTransposeService
      * @param mesWorkshopTranspose 车间转序
      * @return 结果
      */
-    public int insertMesWorkshopTranspose(MesWorkshopTranspose mesWorkshopTranspose);
+    fun insertMesWorkshopTranspose(mesWorkshopTranspose: MesWorkshopTranspose): Int
 
     /**
      * 修改车间转序
@@ -41,7 +40,7 @@ public interface IMesWorkshopTransposeService
      * @param mesWorkshopTranspose 车间转序
      * @return 结果
      */
-    public int updateMesWorkshopTranspose(MesWorkshopTranspose mesWorkshopTranspose);
+    fun updateMesWorkshopTranspose(mesWorkshopTranspose : MesWorkshopTranspose): Int
 
     /**
      * 修改数量
@@ -49,7 +48,7 @@ public interface IMesWorkshopTransposeService
      * @param mesWorkshopTranspose 车间转序
      * @return 结果
      */
-    public int changeQuantity(MesWorkshopTranspose mesWorkshopTranspose);
+    fun changeQuantity(mesWorkshopTranspose : MesWorkshopTranspose): Int
 
     /**
      * 批量删除车间转序
@@ -57,7 +56,7 @@ public interface IMesWorkshopTransposeService
      * @param ids 需要删除的车间转序主键集合
      * @return 结果
      */
-    public int deleteMesWorkshopTransposeByIds(Long[] ids);
+    fun deleteMesWorkshopTransposeByIds(ids:Array<Long>): Int
 
     /**
      * 删除车间转序信息
@@ -65,5 +64,5 @@ public interface IMesWorkshopTransposeService
      * @param id 车间转序主键
      * @return 结果
      */
-    public int deleteMesWorkshopTransposeById(Long id);
+    fun deleteMesWorkshopTransposeById(id: Long): Int
 }

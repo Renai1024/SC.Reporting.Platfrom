@@ -15,8 +15,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="transferPerson"    column="transfer_person"    />
         <result property="confirmTime"    column="confirm_time"    />
         <result property="receiverPerson"    column="receiver_person"    />
-        <result property="isTransferred"    column="is_transferred"    />
-        <result property="isConfirmed"    column="is_confirmed"    />
+        <result property="ifTransferred"    column="if_transferred"    />
+        <result property="ifConfirmed"    column="if_confirmed"    />
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
     <sql id="selectMesWorkshopTransposeVo">
-        select id, snowflake_id, material_code, from_workshop, to_workshop, transfer_quantity, transfer_time, transfer_person, confirm_time, receiver_person, is_transferred, is_confirmed, create_by, create_time, update_by, update_time, remark from mes_workshop_transpose
+        select id, snowflake_id, material_code, from_workshop, to_workshop, transfer_quantity, transfer_time, transfer_person, confirm_time, receiver_person, if_transferred, if_confirmed, create_by, create_time, update_by, update_time, remark from mes_workshop_transpose
     </sql>
 
     <select id="selectMesWorkshopTransposeList" parameterType="MesWorkshopTranspose" resultMap="MesWorkshopTransposeResult">
@@ -43,15 +43,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="confirmStartTime != null "> and confirm_time &gt; #{confirmStartTime}</if>
             <if test="confirmEndTime != null "> and confirm_time &lt; DATEADD(day, 1, #{confirmEndTime})</if>
             <if test="receiverPerson != null  and receiverPerson != ''"> and receiver_person = #{receiverPerson}</if>
-            <if test="isTransferred != null  and isTransferred != ''"> and is_transferred = #{isTransferred}</if>
-            <if test="isConfirmed != null  and isConfirmed != ''"> and is_confirmed = #{isConfirmed}</if>
+            <if test="ifTransferred != null  and ifTransferred != ''"> and if_transferred = #{ifTransferred}</if>
+            <if test="ifConfirmed != null  and ifConfirmed != ''"> and if_confirmed = #{ifConfirmed}</if>
         </where>
         order by transfer_time desc
     </select>
 
     <select id="selectMesWorkshopTransposeListUnreceived" parameterType="MesWorkshopTranspose" resultMap="MesWorkshopTransposeResult">
         <include refid="selectMesWorkshopTransposeVo"/>
-        where is_transferred = 'Y' and is_confirmed = 'N'
+        where if_transferred = 'Y' and if_confirmed = 'N'
         order by transfer_time desc
     </select>
 
@@ -87,8 +87,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="transferPerson != null">transfer_person,</if>
             <if test="confirmTime != null">confirm_time,</if>
             <if test="receiverPerson != null">receiver_person,</if>
-            <if test="isTransferred != null">is_transferred,</if>
-            <if test="isConfirmed != null">is_confirmed,</if>
+            <if test="ifTransferred != null">if_transferred,</if>
+            <if test="ifConfirmed != null">if_confirmed,</if>
             <if test="createBy != null">create_by,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateBy != null">update_by,</if>
@@ -105,8 +105,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="transferPerson != null">#{transferPerson},</if>
             <if test="confirmTime != null">#{confirmTime},</if>
             <if test="receiverPerson != null">#{receiverPerson},</if>
-            <if test="isTransferred != null">#{isTransferred},</if>
-            <if test="isConfirmed != null">#{isConfirmed},</if>
+            <if test="ifTransferred != null">#{ifTransferred},</if>
+            <if test="ifConfirmed != null">#{ifConfirmed},</if>
             <if test="createBy != null">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
@@ -119,7 +119,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update mes_workshop_transpose
         <trim prefix="SET" suffixOverrides=",">
             <if test="receiverPerson != null">receiver_person = #{receiverPerson},</if>
-            <if test="isConfirmed != null">is_confirmed = #{isConfirmed},</if>
+            <if test="ifConfirmed != null">if_confirmed = #{ifConfirmed},</if>
             <if test="confirmTime != null">confirm_time = #{confirmTime},</if>
         </trim>
         where id = #{id}

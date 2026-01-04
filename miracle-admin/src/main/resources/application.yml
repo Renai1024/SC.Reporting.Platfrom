@@ -205,7 +205,7 @@ sunwoda:
 #工装模具导入配置
 #测试环境
   api:
-    url: http://183.62.68.218:9001/dataChange/monitor/toolingMold/import
+    url: http://183.62.68.218:9001/dataChange/monitor/directPassRate/import
   auth:
     appId: middle
     appSec: bb8iUz7kr13q8aY5nhcq6jPNjiDMvpu0

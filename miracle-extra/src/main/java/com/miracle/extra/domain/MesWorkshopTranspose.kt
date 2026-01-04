@@ -1,13 +1,10 @@
 package com.miracle.extra.domain;
-
-import java.math.BigDecimal;
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.miracle.common.core.domain.BaseEntity;
-import lombok.Data;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.miracle.common.annotation.Excel;
+import com.miracle.common.core.domain.BaseEntity
+import java.math.BigDecimal
+import java.util.Date
 
 /**
  * 车间转序对象 mes_workshop_transpose
@@ -15,76 +12,75 @@ import com.miracle.common.annotation.Excel;
  * @author miracle
  * @date 2025-12-17
  */
-@Data
-public class MesWorkshopTranspose extends BaseEntity
-{
-    private static final long serialVersionUID = 1L;
+data class MesWorkshopTranspose
+(
+    private val serialVersionUID : Long = 1L,
 
     /** 主键ID */
-    private Long id;
+    var id: Long? = null,
 
     /** 雪花ID（业务唯一标识） */
     @Excel(name = "雪花ID", readConverterExp = "业=务唯一标识")
-    private String snowflakeId;
+    var snowflakeId: String? = null,
 
     /** 物料编码 */
     @Excel(name = "物料编码")
-    private String materialCode;
+    var materialCode: String? = null,
 
     /** 转出车间 */
     @Excel(name = "转出车间")
-    private String fromWorkshop;
+    var fromWorkshop: String? = null,
 
     /** 转入车间 */
     @Excel(name = "转入车间")
-    private String toWorkshop;
+    var toWorkshop: String? = null,
 
     /** 转序数量 */
     @Excel(name = "转序数量")
-    private BigDecimal transferQuantity;
+    var transferQuantity: BigDecimal? = null,
 
     /** 转序时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "转序时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    private Date transferTime;
+    @field:JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @Excel(name = "转序时间", width = 30.0, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    var  transferTime: Date? = null,
 
     /** 转序开始时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date transferStartTime;
+    var transferStartTime: Date? = null,
 
     /** 转序结束时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date transferEndTime;
+    var transferEndTime: Date? = null,
 
     /** 转序人员 */
     @Excel(name = "转序人员")
-    private String transferPerson;
+    var transferPerson: String? = null,
 
     /** 确认时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "确认时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    private Date confirmTime;
+    @field:JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @Excel(name = "确认时间", width = 30.0, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    var confirmTime: Date? = null,
 
     /** 确认开始时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date confirmStartTime;
+    var confirmStartTime: Date? = null,
 
     /** 确认结束时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date confirmEndTime;
+    var confirmEndTime: Date? = null,
 
     /** 收料人员 */
     @Excel(name = "收料人员")
-    private String receiverPerson;
+    var receiverPerson: String? = null,
 
     /** 是否转序（N否 Y是） */
+    //@field:JsonInclude(JsonInclude.Include.ALWAYS)
     @Excel(name = "是否转序", readConverterExp = "N=否,Y=是")
-    private String isTransferred;
+    var ifTransferred: String? = null,
 
     /** 是否确认（N否 Y是） */
+    //@field:JsonInclude(JsonInclude.Include.ALWAYS)
     @Excel(name = "是否确认", readConverterExp = "N=否,Y=是")
-    private String isConfirmed;
+    var ifConfirmed: String? = null,
 
-
-
-}
+) : BaseEntity()
