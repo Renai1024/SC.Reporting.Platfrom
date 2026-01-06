@@ -202,7 +202,7 @@ plm:
 
 #欣旺达
 sunwoda:
-#工装模具导入配置
+#直通率导入配置
 #测试环境
   api:
     url: http://183.62.68.218:9001/dataChange/monitor/directPassRate/import

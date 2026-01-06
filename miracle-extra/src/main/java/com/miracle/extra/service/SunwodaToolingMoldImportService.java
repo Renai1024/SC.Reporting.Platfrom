@@ -47,6 +47,7 @@ public class SunwodaToolingMoldImportService {
         System.out.println("appId: " + appId);
         // 3. 准备数据
         List<SunwodaToolingMoldImport> requestBody = prepareData();
+        System.out.println("requestBody: " + requestBody);
 
         // 4. 设置认证请求头
         HttpHeaders headers = new HttpHeaders();
@@ -75,10 +76,9 @@ public class SunwodaToolingMoldImportService {
     }
 
     private List<SunwodaToolingMoldImport> prepareData() {
-        LocalDate yesterday = LocalDate.now().minusDays(1);
+        LocalDate yesterday = LocalDate.now().minusDays(2);
         OffsetDateTime now = OffsetDateTime.now(ZoneOffset.of("+08:00")).truncatedTo(ChronoUnit.MILLIS);
         List<SunwodaToolingMoldImport> result = getAllByDate(Date.from(yesterday.atStartOfDay().atZone(java.time.ZoneId.systemDefault()).toInstant()));
-        System.out.println("yesterday: " + Date.from(yesterday.atStartOfDay().atZone(java.time.ZoneId.systemDefault()).toInstant()));
         for (SunwodaToolingMoldImport item : result){
             item.setProjectName("无");
             item.setVendorCode(vendorCode);
