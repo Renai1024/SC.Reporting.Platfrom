@@ -64,7 +64,7 @@ class MesWorkshopTransposeServiceImpl(
         mesWorkshopTranspose.transferPerson = resolveWorkerName(transferPerson)
 
         if((mesWorkshopTranspose.transferQuantity?.compareTo(BigDecimal.ZERO) ?: -1) <= 0) throw  ServiceException("转序数量必须大于0！")
-        val snowflakeId = basicGenerateId(SnowflakeIdGenerator(1, 1)).toString()
+        val snowflakeId = BasicGenerateId(SnowflakeIdGenerator(1, 1)).toString()
         val now : Date = DateUtils.getNowDate()
         val name : String = SecurityUtils.getLoginUser().user.nickName
 
@@ -223,6 +223,6 @@ class MesWorkshopTransposeServiceImpl(
             ?: throw ServiceException("该人员：$input 不存在或无效！")
     }
 
-    private fun basicGenerateId(snowflakeIdGenerator: SnowflakeIdGenerator) : Long =
+    private fun BasicGenerateId(snowflakeIdGenerator: SnowflakeIdGenerator) : Long =
         snowflakeIdGenerator.nextId();
 }

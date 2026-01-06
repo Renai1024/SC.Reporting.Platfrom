@@ -90,8 +90,13 @@ open class MesWorkshopTransposeController(private val mesWorkshopTransposeServic
     /**
      * 删除车间转序
      */
+//    @PreAuthorize("@ss.hasPermi('extra:mes_workshop_transpose:remove')")
+//    @Log(title = "车间转序", businessType = BusinessType.DELETE)
+//	@DeleteMapping("/{ids}")
+//    open fun remove(@PathVariable ids : Array<Long>) : AjaxResult = toAjax(mesWorkshopTransposeService.deleteMesWorkshopTransposeByIds(ids))
+
     @PreAuthorize("@ss.hasPermi('extra:mes_workshop_transpose:remove')")
     @Log(title = "车间转序", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    open fun remove(@PathVariable ids : Array<Long>) : AjaxResult = toAjax(mesWorkshopTransposeService.deleteMesWorkshopTransposeByIds(ids))
+    @DeleteMapping("/{id}")
+    open fun remove(@PathVariable("id") id : Long) : AjaxResult = toAjax(mesWorkshopTransposeService.deleteMesWorkshopTransposeById(id))
 }

@@ -3,19 +3,19 @@ spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         druid:
-#            #正式主库数据源
-#            master:
-#                url: jdbc:mysql://192.168.4.191:3306/miracle?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&sessionVariables=sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
-#                username: root
-#                password: sanco@mysql
-
-
-            # 测试主库数据源
-            # mes测试服务器
+            #正式主库数据源
             master:
-                url: jdbc:mysql://192.168.4.240:3306/miracle?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                url: jdbc:mysql://192.168.4.191:3306/miracle?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&sessionVariables=sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
                 username: root
-                password: Sanco#Mes1=
+                password: sanco@mysql
+
+
+#            # 测试主库数据源
+#            # mes测试服务器
+#            master:
+#                url: jdbc:mysql://192.168.4.240:3306/miracle?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+#                username: root
+#                password: Sanco#Mes1=
 
 
             # 从库数据源
