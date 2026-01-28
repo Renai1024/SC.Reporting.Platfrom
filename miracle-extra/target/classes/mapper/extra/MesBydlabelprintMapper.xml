@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.MesBydlabelprintMapper">
+
+    <resultMap type="MesBydlabelprint" id="MesBydlabelprintResult">
+        <result property="materialCode"    column="materialCode"    />
+        <result property="materialVersion"    column="materialVersion"    />
+        <result property="customerCode"    column="customerCode"    />
+        <result property="dDFactoryFlag"    column="dDFactoryFlag"    />
+        <result property="barCodeStr"    column="barCodeStr"    />
+        <result property="labelNumber"    column="labelNumber"    />
+        <result property="manufactureDate"    column="manufactureDate"    />
+        <result property="labelPrintDateTime"    column="labelPrintDateTime"    />
+    </resultMap>
+
+    <resultMap type="MesBydLabelPrintScan" id="MesBydLabelPrintScanResult">
+        <result property="materialCode"    column="materialCode"    />
+        <result property="materialVersion"    column="materialVersion"    />
+        <result property="customerCode"    column="customerCode"    />
+        <result property="dDFactoryFlag"    column="dDFactoryFlag"    />
+        <result property="barCodeStr"    column="barCodeStr"    />
+        <result property="labelNumber"    column="labelNumber"    />
+        <result property="manufactureDate"    column="manufactureDate"    />
+        <result property="labelPrintDateTime"    column="labelPrintDateTime"    />
+        <result property="scanDate"    column="scanDate"    />
+        <result property="scanMachine"    column="scanMachine"    />
+        <result property="scanIPAddress"    column="scanIPAddress"    />
+        <result property="duplicateFlag"    column="duplicateFlag"    />
+    </resultMap>
+
+    <sql id="selectMesBydlabelprintVo">
+        select materialCode, materialVersion, customerCode, dDFactoryFlag, barCodeStr, labelNumber, manufactureDate, labelPrintDateTime from dbo.vwBYDLabelPrint_Select
+    </sql>
+
+    <sql id="selectMesBydLabelPrintScanVo">
+        SELECT
+        p.materialCode,
+        p.materialVersion,
+        p.customerCode,
+        p.dDFactoryFlag,
+        p.barCodeStr,
+        p.labelNumber,
+        p.manufactureDate,
+        p.labelPrintDateTime,
+        s.scanDate,
+        s.scanMachine,
+        s.scanIPAddress,
+        s.duplicateFlag
+        FROM (
+            SELECT
+            materialCode,
+            materialVersion,
+            customerCode,
+            dDFactoryFlag,
+            barCodeStr,
+            labelNumber,
+            manufactureDate,
+            labelPrintDateTime
+            FROM dbo.vwBYDLabelPrint_Select
+            <where>
+                <if test="materialCode != null and materialCode != ''">
+                    AND materialCode = #{materialCode}
+                </if>
+                <if test="materialVersion != null and materialVersion != ''">
+                    AND materialVersion = #{materialVersion}
+                </if>
+                <if test="customerCode != null and customerCode != ''">
+                    AND customerCode = #{customerCode}
+                </if>
+                <if test="dDFactoryFlag != null and dDFactoryFlag != ''">
+                    AND dDFactoryFlag = #{dDFactoryFlag}
+                </if>
+                <if test="barCodeStr != null and barCodeStr != ''">
+                    AND barCodeStr LIKE CONCAT('%', #{barCodeStr}, '%')
+                </if>
+                <if test="labelNumber != null">
+                    AND labelNumber = #{labelNumber}
+                </if>
+                <if test="labelStartTime != null">
+                    AND manufactureDate &gt;= #{labelStartTime}
+                </if>
+                <if test="labelEndTime != null">
+                    AND manufactureDate &lt;= DATEADD(DAY, 1, #{labelEndTime})
+                </if>
+                <if test="printStartTime != null">
+                    AND labelPrintDateTime &gt;= #{printStartTime}
+                </if>
+                <if test="printEndTime != null">
+                    AND labelPrintDateTime &lt;= DATEADD(DAY, 1, #{printEndTime})
+                </if>
+                <if test="labelNumberStart != null"> and labelNumber &gt;= #{labelNumberStart}</if>
+                <if test="labelNumberEnd != null"> and labelNumber &lt;= #{labelNumberEnd}</if>
+            </where>
+        ) p
+        INNER JOIN dbo.vwBYDLabelScan_Select s
+            ON p.materialCode = s.materialCode AND p.barCodeStr = s.barCodeStr
+            <if test="startTime != null">
+                AND s.scanDate &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND s.scanDate &lt;= DATEADD(DAY, 1, #{endTime})
+            </if>
+            <if test="scanMachine != null and scanMachine != ''">
+                AND s.scanMachine = #{scanMachine}
+            </if>
+            <if test="scanIPAddress != null and scanIPAddress != ''">
+                AND s.scanIPAddress = #{scanIPAddress}
+            </if>
+            <if test="duplicateFlag != null and duplicateFlag != ''">
+                AND s.duplicateFlag = #{duplicateFlag}
+            </if>
+    </sql>
+
+    <select id="selectMesBydlabelprintList" parameterType="MesBydlabelprint" resultMap="MesBydLabelPrintScanResult">
+        <include refid="selectMesBydlabelprintVo"/>
+        <where>
+            <if test="materialCode != null  and materialCode != ''"> and materialCode = #{materialCode}</if>
+            <if test="materialVersion != null  and materialVersion != ''"> and materialVersion = #{materialVersion}</if>
+            <if test="customerCode != null  and customerCode != ''"> and customerCode = #{customerCode}</if>
+            <if test="dDFactoryFlag != null  and dDFactoryFlag != ''"> and dDFactoryFlag = #{dDFactoryFlag}</if>
+            <if test="barCodeStr != null  and barCodeStr != ''"> and barCodeStr like concat('%', #{barCodeStr}, '%')</if>
+            <if test="labelNumber != null "> and labelNumber = #{labelNumber}</if>
+            <if test="labelStartTime != null"> and manufactureDate &gt;= #{labelStartTime}</if>
+            <if test="labelEndTime != null"> and manufactureDate &lt;= DATEADD(day, 1, #{labelEndTime})</if>
+            <if test="printStartTime != null"> and labelPrintDateTime &gt;= #{printStartTime}</if>
+            <if test="printEndTime != null"> and labelPrintDateTime &lt;= DATEADD(day, 1, #{printEndTime})</if>
+            <if test="labelNumberStart != null"> and labelNumber &gt;= #{labelNumberStart}</if>
+            <if test="labelNumberEnd != null"> and labelNumber &lt;= #{labelNumberEnd}</if>
+        </where>
+        order by labelPrintDateTime desc
+    </select>
+
+    <select id="selectMesBydLabelPrintScanList"
+            parameterType="MesBydLabelPrintScan"
+            resultMap="MesBydLabelPrintScanResult">
+        <include refid="selectMesBydLabelPrintScanVo"/>
+        ORDER BY p.labelPrintDateTime DESC
+    </select>
+
+    <select id="selectMesBydlabelprintByMaterialCode" parameterType="String" resultMap="MesBydlabelprintResult">
+        <include refid="selectMesBydlabelprintVo"/>
+        where materialCode = #{materialCode}
+    </select>
+
+    <select id="getMesBydLabelPrintCount" parameterType="MesBydlabelprint" resultType="int">
+        SELECT COUNT(barCodeStr)
+        FROM dbo.vwBYDLabelPrint_Select
+        WHERE materialCode = #{materialCode}
+        <if test="labelStartTime != null"> and manufactureDate &gt;= #{labelStartTime}</if>
+        <if test="labelEndTime != null"> and manufactureDate &lt; DATEADD(day, 1, #{labelEndTime})</if>
+<!--            <if test="printStartTime != null"> and labelPrintDateTime &gt;= #{printStartTime}</if>-->
+<!--            <if test="printEndTime != null"> and labelPrintDateTime &lt;= DATEADD(day, 1, #{printEndTime})</if>-->
+        <if test="labelNumber != null "> and labelNumber = #{labelNumber}</if>
+        <if test="labelNumberStart != null"> and labelNumber &gt;= #{labelNumberStart}</if>
+        <if test="labelNumberEnd != null"> and labelNumber &lt;= #{labelNumberEnd}</if>
+    </select>
+
+    <select id="getMesBydLabelUnscannedList" resultType="MesBydlabelprint" resultMap="MesBydLabelPrintScanResult">
+        SELECT p.materialCode, p.materialVersion, p.customerCode, p.dDFactoryFlag, p.barCodeStr, p.labelNumber, p.manufactureDate, p.labelPrintDateTime
+        FROM dbo.vwBYDLabelPrint_Select p
+        WHERE p.materialCode = #{materialCode}
+        <if test="labelStartTime != null">AND p.labelPrintDateTime &gt;= #{labelStartTime}</if>
+        <if test="labelEndTime != null">AND p.labelPrintDateTime &lt; DATEADD(day, 1, #{labelEndTime}) </if>
+        <if test="labelNumber != null "> and p.labelNumber = #{labelNumber}</if>
+        <if test="labelNumberStart != null"> and p.labelNumber &gt;= #{labelNumberStart}</if>
+        <if test="labelNumberEnd != null"> and p.labelNumber &lt;= #{labelNumberEnd}</if>
+        AND NOT EXISTS (
+        SELECT 1
+        FROM dbo.vwBYDLabelScan_Select s
+        WHERE s.materialCode = p.materialCode
+        AND s.barCodeStr = p.barCodeStr
+        );
+    </select>
+
+</mapper>

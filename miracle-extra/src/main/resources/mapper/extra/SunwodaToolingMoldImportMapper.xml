@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.SunwodaToolingMoldImportMapper">
+
+    <resultMap type="SunwodaToolingMoldImport" id="SunwodaToolingMoldImportResult">
+        <result property="itemCode" column="itemCode"/>
+        <result property="itemName" column="itemName"/>
+        <result property="processName" column="processName"/>
+        <result property="projectName" column="projectName"/>
+        <result property="dataUploadTime" column="create_time"/>
+        <result property="productionQuantity" column="productionQuantity"/>
+        <result property="qualifiedQuantity" column="qualifiedQuantity"/>
+        <result property="unQualifiedQuantity" column="unQualifiedQuantity"/>
+        <result property="qualifiedRate" column="qualifiedRate"/>
+    </resultMap>
+
+    <sql id="selectSunwodaToolingMoldImportVo">
+        select *
+        from V_MES_FistInspectionToXWD
+    </sql>
+
+
+    <select id="selectSunwodaToolingMoldImportList" parameterType="SunwodaToolingMoldImport" resultMap="SunwodaToolingMoldImportResult">
+        <include refid="selectSunwodaToolingMoldImportVo"/>
+        <where>
+            <if test="itemCode != null and itemCode != ''"> and itemCode like concat('%', #{itemCode}, '%')</if>
+            <if test="itemName != null and itemName != ''"> and itemName like concat('%', #{itemName}, '%')</if>
+            <if test="processName != null and processName != ''"> and processName like concat('%', #{processName}, '%')</if>
+            <if test="projectName != null and projectName != ''"> and projectName like concat('%', #{projectName}, '%')</if>
+            <if test="dataUploadTime != null"> and create_time &gt;= #{dataUploadTime}</if>
+            <if test="productionQuantity != null and productionQuantity != ''"> and productionQuantity like concat('%', #{productionQuantity}, '%')</if>
+            <if test="qualifiedQuantity != null and qualifiedQuantity != ''"> and qualifiedQuantity like concat('%', #{qualifiedQuantity}, '%')</if>
+            <if test="unQualifiedQuantity != null and unQualifiedQuantity != ''"> and unQualifiedQuantity like concat('%', #{unQualifiedQuantity}, '%')</if>
+            <if test="qualifiedRate != null and qualifiedRate != ''"> and qualifiedRate like concat('%', #{qualifiedRate}, '%')</if>
+
+        </where>
+    </select>
+
+    <select id="selectSunwodaToolingMoldImportListByDate" parameterType="SunwodaToolingMoldImport" resultMap="SunwodaToolingMoldImportResult">
+        <include refid="selectSunwodaToolingMoldImportVo"/>
+        where create_time &gt;= #{date} and create_time &lt; DATE_ADD(#{date}, interval 1 day)
+    </select>
+
+
+</mapper>

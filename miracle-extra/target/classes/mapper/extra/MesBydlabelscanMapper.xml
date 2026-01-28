@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.MesBydlabelscanMapper">
+
+    <resultMap type="MesBydlabelscan" id="MesBydlabelscanResult">
+        <result property="materialCode"    column="materialCode"    />
+        <result property="barCodeStr"    column="barCodeStr"    />
+        <result property="scanDate"    column="scanDate"    />
+        <result property="scanMachine"    column="scanMachine"    />
+        <result property="scanIPAddress"    column="scanIPAddress"    />
+        <result property="duplicateFlag"    column="duplicateFlag"    />
+    </resultMap>
+
+    <sql id="selectMesBydlabelscanVo">
+        select materialCode, barCodeStr, scanDate, scanMachine, scanIPAddress, duplicateFlag from dbo.vwBYDLabelScan_Select
+    </sql>
+
+    <select id="selectMesBydlabelscanList" parameterType="MesBydlabelscan" resultMap="MesBydlabelscanResult">
+        <include refid="selectMesBydlabelscanVo"/>
+        <where>
+            <if test="materialCode != null  and materialCode != ''"> and materialCode = #{materialCode}</if>
+            <if test="barCodeStr != null  and barCodeStr != ''"> and barCodeStr like concat('%', #{barCodeStr}, '%')</if>
+            <if test="startTime != null"> and scanDate &gt;= #{startTime}</if>
+            <if test="endTime != null"> and scanDate &lt;= DATEADD(day, 1, #{endTime})</if>
+            <if test="scanMachine != null  and scanMachine != ''"> and scanMachine = #{scanMachine}</if>
+            <if test="scanIPAddress != null  and scanIPAddress != ''"> and scanIPAddress = #{scanIPAddress}</if>
+            <if test="duplicateFlag != null  and duplicateFlag != ''"> and duplicateFlag = #{duplicateFlag}</if>
+        </where>
+        order by scanDate desc
+    </select>
+
+    <select id="selectMesBydlabelscanByMaterialCode" parameterType="String" resultMap="MesBydlabelscanResult">
+        <include refid="selectMesBydlabelscanVo"/>
+        where materialCode = #{materialCode}
+    </select>
+
+    <select id="getMesBydLabelScanCountByPrint" resultType="int" parameterType="MesBydlabelprint">
+        SELECT COUNT(*)
+        FROM dbo.vwBYDLabelScan_Select s
+        WHERE s.materialCode = #{materialCode}
+        AND EXISTS (
+            SELECT 1
+            FROM dbo.vwBYDLabelPrint_Select p
+            WHERE p.materialCode = s.materialCode
+            AND p.barCodeStr = s.barCodeStr
+            <if test="labelStartTime != null">AND p.labelPrintDateTime &gt;= #{labelStartTime}</if>
+            <if test="labelEndTime != null">AND p.labelPrintDateTime &lt; DATEADD(day, 1, #{labelEndTime}) </if>
+            <if test="labelNumber != null "> and p.labelNumber = #{labelNumber}</if>
+            <if test="labelNumberStart != null"> and p.labelNumber &gt;= #{labelNumberStart}</if>
+            <if test="labelNumberEnd != null"> and p.labelNumber &lt;= #{labelNumberEnd}</if>
+        )
+    </select>
+
+    <select id="getMesBydLabelUnsannedCount" resultType="int" parameterType="MesBydlabelprint">
+        SELECT COUNT(DISTINCT p.barCodeStr)
+        FROM dbo.vwBYDLabelPrint_Select p
+        WHERE p.materialCode = #{materialCode}
+        <if test="labelStartTime != null">AND p.labelPrintDateTime &gt;= #{labelStartTime}</if>
+        <if test="labelEndTime != null">AND p.labelPrintDateTime &lt; DATEADD(day, 1, #{labelEndTime}) </if>
+        <if test="labelNumber != null "> and p.labelNumber = #{labelNumber}</if>
+        <if test="labelNumberStart != null"> and p.labelNumber &gt;= #{labelNumberStart}</if>
+        <if test="labelNumberEnd != null"> and p.labelNumber &lt;= #{labelNumberEnd}</if>
+        AND NOT EXISTS (
+            SELECT 1
+            FROM dbo.vwBYDLabelScan_Select s
+            WHERE s.materialCode = p.materialCode
+            AND s.barCodeStr = p.barCodeStr
+        );
+    </select>
+
+</mapper>

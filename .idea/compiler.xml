@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="miracle-quartz" />
+        <module name="miracle-common" />
+        <module name="miracle-framework" />
+        <module name="miracle-generator" />
+        <module name="miracle-extra" />
+        <module name="miracle-system" />
+        <module name="miracle-admin" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="miracle" options="-parameters" />
+      <module name="miracle-admin" options="-parameters" />
+      <module name="miracle-common" options="-parameters" />
+      <module name="miracle-extra" options="-parameters" />
+      <module name="miracle-framework" options="-parameters" />
+      <module name="miracle-generator" options="-parameters" />
+      <module name="miracle-quartz" options="-parameters" />
+      <module name="miracle-system" options="-parameters" />
+    </option>
+  </component>
+</project>

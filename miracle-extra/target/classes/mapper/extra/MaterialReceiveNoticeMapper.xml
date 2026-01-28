@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.MaterialReceiveNoticeMapper">
+    
+    <resultMap type="MaterialReceiveNotice" id="MaterialReceiveNoticeResult">
+        <result property="fentryId"    column="FENTRYID"    />
+        <result property="billNo"    column="BILLNO"    />
+        <result property="receiveDate"    column="RECEIVE_DATE"    />
+        <result property="receiveOrg"    column="RECEIVE_ORG"    />
+        <result property="purchaseOrg"    column="PURCHASE_ORG"    />
+        <result property="supplierName"    column="SUPPLIER_NAME"    />
+        <result property="materialNo"    column="MATERIAL_NO"    />
+        <result property="materialName"    column="MATERIAL_NAME"    />
+        <result property="receiveQty"    column="RECEIVE_QTY"    />
+        <result property="materialSpe"    column="MATERIAL_SPE"    />
+        <result property="flot"    column="FLOT"    />
+        <result property="materialDesc"    column="MATERIAL_DESC"    />
+        <result property="materialNoWw"    column="MATERIAL_NO_WW"    />
+    </resultMap>
+
+    <sql id="selectMaterialReceiveNoticeVo">
+        select FENTRYID, BILLNO, RECEIVE_DATE, RECEIVE_ORG, PURCHASE_ORG, SUPPLIER_NAME, MATERIAL_NO, MATERIAL_NAME, RECEIVE_QTY, MATERIAL_SPE, FLOT, MATERIAL_DESC, MATERIAL_NO_WW
+        from SANCO.REPORT_MaterialReceiveNotice
+
+    </sql>
+
+    <select id="selectMaterialReceiveNoticeList" parameterType="MaterialReceiveNotice" resultMap="MaterialReceiveNoticeResult">
+        <include refid="selectMaterialReceiveNoticeVo"/>
+        <where>  
+            <if test="billNo != null  and billNo != ''"> and BILLNO like concat('%', #{billNo}, '%')</if>
+            <if test="receiveDate != null "> and CONVERT(DATETIME, RECEIVE_DATE) &gt;= #{receiveDate} and CONVERT(DATETIME, RECEIVE_DATE) &lt; DATEADD(day, 1, #{receiveDate}) </if>
+            <if test="receiveOrg != null  and receiveOrg != ''"> and RECEIVE_ORG like concat('%', #{receiveOrg}, '%')</if>
+            <if test="purchaseOrg != null  and purchaseOrg != ''"> and PURCHASE_ORG like concat('%', #{purchaseOrg}, '%')</if>
+            <if test="supplierName != null  and supplierName != ''"> and SUPPLIER_NAME like concat('%', #{supplierName}, '%')</if>
+            <if test="materialNo != null  and materialNo != ''"> and MATERIAL_NO like concat('%', #{materialNo}, '%')</if>
+            <if test="materialName != null  and materialName != ''"> and MATERIAL_NAME like concat('%', #{materialName}, '%')</if>
+            <if test="materialSpe != null  and materialSpe != ''"> and MATERIAL_SPE = #{materialSpe}</if>
+            <if test="flot != null  and flot != ''"> and FLOT like concat('%', #{flot}, '%')</if>
+            <if test="materialDesc != null  and materialDesc != ''"> and MATERIAL_DESC like concat('%', #{materialDesc}, '%')</if>
+            <if test="materialNoWw != null  and materialNoWw != ''"> and MATERIAL_NO_WW like concat('%', #{materialNoWw}, '%')</if>
+        </where>
+        order by RECEIVE_DATE DESC
+    </select>
+    
+    <select id="selectMaterialReceiveNoticeByFENTRYID" parameterType="Long" resultMap="MaterialReceiveNoticeResult">
+        <include refid="selectMaterialReceiveNoticeVo"/>
+        where FENTRYID = #{fentryId}
+    </select>
+
+    <select id="selectMaterialReceiveNoticeByFENTRYIDs" resultMap="MaterialReceiveNoticeResult">
+        <include refid="selectMaterialReceiveNoticeVo"/>
+        where FENTRYID in
+        <foreach item="id" collection="fentryIds" separator="," open="(" close=")" index="index">
+            #{id}
+        </foreach>
+    </select>
+
+
+    <insert id="insertMaterialReceiveNotice" parameterType="MaterialReceiveNotice" useGeneratedKeys="true" keyProperty="FENTRYID">
+        insert into material_receive_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="billNo != null">BILLNO,</if>
+            <if test="receiveDate != null">RECEIVE_DATE,</if>
+            <if test="receiveOrg != null">RECEIVE_ORG,</if>
+            <if test="purchaseOrg != null">PURCHASE_ORG,</if>
+            <if test="supplierName != null">SUPPLIER_NAME,</if>
+            <if test="materialNo != null">MATERIAL_NO,</if>
+            <if test="materialName != null">MATERIAL_NAME,</if>
+            <if test="receiveQty != null">RECEIVE_QTY,</if>
+            <if test="materialSpe != null">MATERIAL_SPE,</if>
+            <if test="flot != null">FLOT,</if>
+            <if test="materialDesc != null">MATERIAL_DESC,</if>
+            <if test="materialNoWw != null">MATERIAL_NO_WW,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="billno != null">#{BILLNO},</if>
+            <if test="receiveDate != null">#{receiveDate},</if>
+            <if test="receiveOrg != null">#{receiveOrg},</if>
+            <if test="purchaseOrg != null">#{purchaseOrg},</if>
+            <if test="supplierName != null">#{supplierName},</if>
+            <if test="materialNo != null">#{materialNo},</if>
+            <if test="materialName != null">#{materialName},</if>
+            <if test="receiveQty != null">#{receiveQty},</if>
+            <if test="materialSpe != null">#{materialSpe},</if>
+            <if test="flot != null">#{FLOT},</if>
+            <if test="materialDesc != null">#{materialDesc},</if>
+            <if test="materialNoWw != null">#{materialNoWw},</if>
+         </trim>
+    </insert>
+
+
+
+    <delete id="deleteMaterialReceiveNoticeByFENTRYID" parameterType="Long">
+        delete from material_receive_notice where FENTRYID = #{FENTRYID}
+    </delete>
+
+    <delete id="deleteMaterialReceiveNoticeByFENTRYIDs" parameterType="String">
+        delete from material_receive_notice where FENTRYID in 
+        <foreach item="fentryid" collection="array" open="(" separator="," close=")">
+            #{FENTRYID}
+        </foreach>
+    </delete>
+</mapper>

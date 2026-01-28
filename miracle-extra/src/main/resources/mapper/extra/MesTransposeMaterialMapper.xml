@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.extra.mapper.MesTransposeMaterialMapper">
+
+    <resultMap type="MesTransposeMaterial" id="MesTransposeMaterialResult">
+        <result property="id"    column="id"    />
+        <result property="materialCode"    column="material_code"    />
+        <result property="materialName"    column="material_name"    />
+        <result property="materialWorkshop"    column="material_workshop"    />
+        <result property="materialImage"    column="material_image"    />
+        <result property="materialImageId"    column="material_image_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+
+    <sql id="selectMesTransposeMaterialVo">
+        select id,
+            material_code,
+            material_name,
+            material_workshop,
+            material_image,
+            material_image_id,
+            create_by,
+            create_time,
+            update_by,
+            update_time,
+            remark
+        from mes_transpose_material
+    </sql>
+
+    <select id="selectMesTransposeMaterialList" parameterType="MesTransposeMaterial" resultMap="MesTransposeMaterialResult">
+        <include refid="selectMesTransposeMaterialVo"/>
+        <where>
+            <if test="materialCode != null  and materialCode != ''"> and material_code like concat('%',#{materialCode},'%')</if>
+            <if test="materialName != null  and materialName != ''"> and material_name like concat('%',#{materialName},'%')</if>
+            <if test="materialWorkshop != null  and materialWorkshop != ''"> and material_workshop like concat('%',#{materialWorkshop},'%')</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectMesTransposeMaterialById" parameterType="Long" resultMap="MesTransposeMaterialResult">
+        <include refid="selectMesTransposeMaterialVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectMesTransposeMaterialListByMaterialCode" parameterType="String" resultMap="MesTransposeMaterialResult">
+        <include refid="selectMesTransposeMaterialVo"/>
+        where material_code like concat('%',#{materialCode},'%')
+        order by create_time desc
+    </select>
+
+    <select id="selectMesTransposeMaterialListByMaterialName" parameterType="String" resultMap="MesTransposeMaterialResult">
+        <include refid="selectMesTransposeMaterialVo"/>
+        where material_name like concat('%',#{materialName},'%')
+        order by create_time desc
+    </select>
+
+    <insert id="insertMesTransposeMaterial" parameterType="MesTransposeMaterial" useGeneratedKeys="true" keyProperty="id">
+        insert into mes_transpose_material
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="materialCode != null and materialCode != ''">material_code,</if>
+            <if test="materialName != null and materialName != ''">material_name,</if>
+            <if test="materialWorkshop != null and materialWorkshop != ''">material_workshop,</if>
+            <if test="materialImage != null and materialImage != ''">material_image,</if>
+            <if test="materialImageId != null">material_image_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="materialCode != null and materialCode != ''">#{materialCode},</if>
+            <if test="materialName != null and materialName != ''">#{materialName},</if>
+            <if test="materialWorkshop != null and materialWorkshop != ''">#{materialWorkshop},</if>
+            <if test="materialImage != null and materialImage != ''">    #{materialImage},</if>
+            <if test="materialImageId != null">#{materialImageId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateMesTransposeMaterial" parameterType="MesTransposeMaterial">
+        update mes_transpose_material
+        <trim prefix="SET" suffixOverrides=",">
+            material_name = #{materialName},
+            material_workshop = #{materialWorkshop},
+            material_image = #{materialImage},
+            material_image_id = #{materialImageId},
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMesTransposeMaterialById" parameterType="Long">
+        delete from mes_transpose_material where id = #{id}
+    </delete>
+
+    <delete id="deleteMesTransposeMaterialByIds" parameterType="String">
+        delete from mes_transpose_material where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

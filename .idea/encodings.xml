@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/miracle-admin/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/miracle-admin/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/miracle-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/miracle-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/miracle-extra/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/miracle-extra/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/miracle-framework/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/miracle-framework/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/miracle-generator/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/miracle-generator/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/miracle-quartz/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/miracle-quartz/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/miracle-system/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/miracle-system/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>
